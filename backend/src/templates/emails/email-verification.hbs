@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verify Your Email</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background-color: #f4f4f4; }
+    .container { max-width: 600px; margin: 0 auto; background: #fff; }
+    .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 20px; text-align: center; }
+    .header h1 { color: #fff; font-size: 32px; margin-bottom: 10px; }
+    .content { padding: 40px 30px; text-align: center; }
+    .content h2 { color: #333; margin-bottom: 20px; font-size: 24px; }
+    .content p { margin-bottom: 15px; color: #666; font-size: 16px; }
+    .verification-code { background: #f8f9fa; border: 2px dashed #667eea; padding: 20px; margin: 30px 0; border-radius: 8px; }
+    .verification-code h3 { color: #667eea; margin-bottom: 10px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+    .code { font-size: 36px; font-weight: bold; color: #333; letter-spacing: 8px; }
+    .cta-button { display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; padding: 15px 40px; text-decoration: none; border-radius: 8px; font-weight: bold; margin: 20px 0; }
+    .cta-button:hover { opacity: 0.9; }
+    .footer { background: #f8f9fa; padding: 30px; text-align: center; border-top: 1px solid #e0e0e0; }
+    .footer p { color: #999; font-size: 14px; margin-bottom: 10px; }
+    .warning { background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px; text-align: left; }
+    .warning p { color: #856404; margin: 0; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>✉️ Verify Your Email</h1>
+    </div>
+
+    <div class="content">
+      <h2>Hello {{name}},</h2>
+      
+      <p>Thank you for signing up with Travellr! To complete your registration, please verify your email address.</p>
+
+      <div class="verification-code">
+        <h3>Your Verification Code</h3>
+        <div class="code">{{verificationCode}}</div>
+      </div>
+
+      <p>Enter this code on the verification page to activate your account.</p>
+
+      <a href="{{verificationUrl}}" class="cta-button">Verify Email Address</a>
+
+      <p style="font-size: 14px; color: #999; margin-top: 30px;">
+        This code will expire in {{expiryHours}} hours.
+      </p>
+
+      <div class="warning">
+        <p><strong>⚠️ Security Notice:</strong> If you didn't create an account with Travellr, please ignore this email or contact our support team if you're concerned about unauthorized use of your email address.</p>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>&copy; {{year}} Travellr. All rights reserved.</p>
+      <p style="font-size: 12px; color: #999; margin-top: 15px;">
+        This is an automated email, please do not reply directly to this message.
+      </p>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vendor Application Approved</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background-color: #f4f4f4; }
+    .container { max-width: 600px; margin: 0 auto; background: #fff; }
+    .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 40px 20px; text-align: center; }
+    .header h1 { color: #fff; font-size: 32px; margin-bottom: 10px; }
+    .header p { color: rgba(255,255,255,0.9); font-size: 16px; }
+    .content { padding: 40px 30px; }
+    .content h2 { color: #333; margin-bottom: 20px; font-size: 24px; }
+    .content p { margin-bottom: 15px; color: #666; }
+    .success-badge { background: #d1fae5; color: #065f46; padding: 10px 20px; border-radius: 20px; display: inline-block; font-weight: bold; margin: 20px 0; }
+    .next-steps { background: #f8f9fa; padding: 25px; border-radius: 8px; margin: 25px 0; }
+    .next-steps h3 { color: #10b981; margin-bottom: 15px; }
+    .step { display: flex; gap: 15px; margin-bottom: 15px; align-items: start; }
+    .step-number { background: #10b981; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; }
+    .step-content h4 { color: #333; margin-bottom: 5px; }
+    .step-content p { margin: 0; font-size: 14px; color: #666; }
+    .cta-button { display: inline-block; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #fff; padding: 15px 40px; text-decoration: none; border-radius: 8px; font-weight: bold; margin: 20px 0; }
+    .footer { background: #f8f9fa; padding: 30px; text-align: center; border-top: 1px solid #e0e0e0; }
+    .footer p { color: #999; font-size: 14px; margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🎉 Congratulations!</h1>
+      <p>Your vendor application has been approved</p>
+    </div>
+
+    <div class="content">
+      <h2>Welcome to Travellr, {{businessName}}!</h2>
+      
+      <div style="text-align: center;">
+        <span class="success-badge">✓ APPROVED</span>
+      </div>
+
+      <p>We're excited to have you join the Travellr community! Your vendor application has been reviewed and approved.</p>
+
+      <p>You can now start creating and managing your trips, connecting with travelers, and growing your business on our platform.</p>
+
+      <div class="next-steps">
+        <h3>🚀 Get Started - Next Steps</h3>
+        
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h4>Complete Your Profile</h4>
+            <p>Add your business description, contact details, and upload high-quality photos.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h4>Create Your First Trip</h4>
+            <p>List your first trip with detailed descriptions, pricing, and stunning images.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h4>Set Up Stripe Connect</h4>
+            <p>Connect your Stripe account to receive automated payouts for bookings.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h4>Start Receiving Bookings</h4>
+            <p>Once your trips are published, customers can discover and book them.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align: center;">
+        <a href="{{websiteUrl}}/vendor/dashboard" class="cta-button">Go to Dashboard</a>
+      </div>
+
+      <p style="margin-top: 30px;"><strong>Need Help?</strong></p>
+      <p>Check out our <a href="{{websiteUrl}}/vendor/guide" style="color: #10b981;">Vendor Guide</a> or contact our support team at <a href="mailto:vendors@travellr.com" style="color: #10b981;">vendors@travellr.com</a></p>
+
+      <p style="margin-top: 20px;">We're here to support your success!</p>
+
+      <p><strong>The Travellr Team</strong></p>
+    </div>
+
+    <div class="footer">
+      <p>&copy; {{year}} Travellr. All rights reserved.</p>
+      <p>
+        <a href="{{websiteUrl}}/vendor/terms" style="color: #10b981; text-decoration: none;">Vendor Terms</a> |
+        <a href="{{websiteUrl}}/vendor/help" style="color: #10b981; text-decoration: none;">Help Center</a>
+      </p>
+    </div>
+  </div>
+</body>
+</html>
