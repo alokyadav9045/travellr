@@ -40,13 +40,18 @@ const tripSchema = new mongoose.Schema(
     highlights: [String],
 
     // Location details
-    location: { type: String },
+    location: {
+      city: { type: String, required: true },
+      state: String,
+      country: { type: String, required: true },
+      address: String,
+      coordinates: {
+        lat: Number,
+        lng: Number
+      }
+    },
     startLocation: { type: String },
     endLocation: { type: String },
-    coordinates: {
-      lat: Number,
-      lng: Number
-    },
 
     // Trip metadata
     category: { type: String, enum: ['adventure', 'cultural', 'religious', 'nature', 'beach', 'mountain', 'wildlife', 'heritage', 'wellness', 'other'], index: true },
@@ -61,7 +66,13 @@ const tripSchema = new mongoose.Schema(
     },
 
     // Pricing
-    price: { type: Number, required: true },
+    price: {
+      amount: { type: Number, required: true },
+      currency: { type: String, default: 'INR' },
+      discountedAmount: { type: Number },
+      discountPercentage: { type: Number },
+      priceType: { type: String, enum: ['per_person', 'per_group'], default: 'per_person' }
+    },
     originalPrice: { type: Number },
     currency: { type: String, default: 'INR' },
 

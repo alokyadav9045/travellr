@@ -146,11 +146,11 @@ export default function BlogPage() {
     const featuredPosts = blogPosts.filter(post => post.featured);
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
             <Header />
 
             {/* Hero Section */}
-            <section className="bg-gradient-to-br from-[#2D3436] via-[#636E72] to-[#2D3436] pt-32 pb-16">
+            <section className="bg-gradient-to-br from-[#2D3436] via-[#636E72] to-[#2D3436] dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 pt-32 pb-16">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -175,7 +175,7 @@ export default function BlogPage() {
                                 placeholder="Search articles..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="pl-12 h-14 rounded-full text-lg"
+                                className="pl-12 h-14 rounded-full text-lg bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:bg-white/20"
                             />
                         </div>
                     </motion.div>
@@ -188,7 +188,7 @@ export default function BlogPage() {
                     <section className="mb-16">
                         <div className="flex items-center gap-2 mb-6">
                             <TrendingUp className="w-5 h-5 text-[#FF6B35]" />
-                            <h2 className="text-2xl font-bold text-gray-900">Featured Articles</h2>
+                            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Featured Articles</h2>
                         </div>
 
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -200,7 +200,7 @@ export default function BlogPage() {
                                     transition={{ delay: index * 0.1 }}
                                 >
                                     <Link href={`/blog/${post.slug}`}>
-                                        <Card className="overflow-hidden hover:shadow-xl transition-shadow h-full group">
+                                        <Card className="overflow-hidden hover:shadow-xl transition-shadow h-full group dark:bg-gray-900 dark:border-gray-800">
                                             <div className="relative h-64">
                                                 <Image
                                                     src={post.image}
@@ -213,17 +213,17 @@ export default function BlogPage() {
                                                     Featured
                                                 </Badge>
                                                 <div className="absolute bottom-4 left-4 right-4">
-                                                    <Badge variant="secondary" className="mb-2">{post.category}</Badge>
-                                                    <h3 className="text-xl font-bold text-white line-clamp-2">
+                                                    <Badge variant="secondary" className="mb-2 bg-white/90 dark:bg-gray-900/90 text-gray-900 dark:text-white border-none">{post.category}</Badge>
+                                                    <h3 className="text-xl font-bold text-white line-clamp-2 drop-shadow-md">
                                                         {post.title}
                                                     </h3>
                                                 </div>
                                             </div>
                                             <CardContent className="p-4">
-                                                <p className="text-gray-600 line-clamp-2 mb-4">{post.excerpt}</p>
+                                                <p className="text-gray-600 dark:text-gray-400 line-clamp-2 mb-4">{post.excerpt}</p>
                                                 <div className="flex items-center justify-between">
                                                     <div className="flex items-center gap-2">
-                                                        <div className="relative w-8 h-8 rounded-full overflow-hidden">
+                                                        <div className="relative w-8 h-8 rounded-full overflow-hidden border border-gray-200 dark:border-gray-700">
                                                             <Image
                                                                 src={post.author.avatar}
                                                                 alt={post.author.name}
@@ -231,9 +231,9 @@ export default function BlogPage() {
                                                                 className="object-cover"
                                                             />
                                                         </div>
-                                                        <span className="text-sm text-gray-600">{post.author.name}</span>
+                                                        <span className="text-sm text-gray-600 dark:text-gray-400">{post.author.name}</span>
                                                     </div>
-                                                    <div className="flex items-center gap-3 text-sm text-gray-500">
+                                                    <div className="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-500">
                                                         <span className="flex items-center gap-1">
                                                             <Clock className="w-4 h-4" />
                                                             {post.readTime} min
@@ -253,9 +253,9 @@ export default function BlogPage() {
                     {/* Sidebar */}
                     <aside className="lg:col-span-1 space-y-6">
                         {/* Categories */}
-                        <Card>
+                        <Card className="dark:bg-gray-900 dark:border-gray-800">
                             <CardContent className="p-5">
-                                <h3 className="font-bold text-gray-900 mb-4">Categories</h3>
+                                <h3 className="font-bold text-gray-900 dark:text-white mb-4">Categories</h3>
                                 <div className="space-y-2">
                                     {categories.map((cat) => (
                                         <button
@@ -263,11 +263,11 @@ export default function BlogPage() {
                                             onClick={() => setSelectedCategory(cat.name)}
                                             className={`flex items-center justify-between w-full px-3 py-2 rounded-lg text-left transition-colors ${selectedCategory === cat.name
                                                 ? 'bg-[#FF6B35] text-white'
-                                                : 'hover:bg-gray-100 text-gray-700'
+                                                : 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300'
                                                 }`}
                                         >
                                             <span>{cat.name}</span>
-                                            <span className={`text-sm ${selectedCategory === cat.name ? 'text-white/80' : 'text-gray-400'
+                                            <span className={`text-sm ${selectedCategory === cat.name ? 'text-white/80' : 'text-gray-400 dark:text-gray-500'
                                                 }`}>
                                                 {cat.count}
                                             </span>
@@ -278,15 +278,15 @@ export default function BlogPage() {
                         </Card>
 
                         {/* Popular Tags */}
-                        <Card>
+                        <Card className="dark:bg-gray-900 dark:border-gray-800">
                             <CardContent className="p-5">
-                                <h3 className="font-bold text-gray-900 mb-4">Popular Tags</h3>
+                                <h3 className="font-bold text-gray-900 dark:text-white mb-4">Popular Tags</h3>
                                 <div className="flex flex-wrap gap-2">
                                     {['Adventure', 'Budget', 'Mountains', 'Beach', 'Culture', 'Food', 'Solo Travel', 'Tips'].map((tag) => (
                                         <Badge
                                             key={tag}
                                             variant="secondary"
-                                            className="cursor-pointer hover:bg-[#FF6B35] hover:text-white transition-colors"
+                                            className="cursor-pointer hover:bg-[#FF6B35] hover:text-white transition-colors dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-[#FF6B35] dark:hover:text-white"
                                         >
                                             {tag}
                                         </Badge>
@@ -296,7 +296,7 @@ export default function BlogPage() {
                         </Card>
 
                         {/* Newsletter */}
-                        <Card className="bg-gradient-to-br from-[#FF6B35] to-[#E55A2B] text-white">
+                        <Card className="bg-gradient-to-br from-[#FF6B35] to-[#E55A2B] text-white border-none">
                             <CardContent className="p-5">
                                 <h3 className="font-bold mb-2">Subscribe to Newsletter</h3>
                                 <p className="text-white/80 text-sm mb-4">
@@ -305,9 +305,9 @@ export default function BlogPage() {
                                 <Input
                                     type="email"
                                     placeholder="Your email"
-                                    className="mb-3 bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                                    className="mb-3 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:bg-white/20"
                                 />
-                                <Button className="w-full bg-white text-[#FF6B35] hover:bg-gray-100">
+                                <Button className="w-full bg-white text-[#FF6B35] hover:bg-gray-100 border-none">
                                     Subscribe
                                 </Button>
                             </CardContent>
@@ -317,10 +317,10 @@ export default function BlogPage() {
                     {/* Posts Grid */}
                     <div className="lg:col-span-3">
                         <div className="flex items-center justify-between mb-6">
-                            <h2 className="text-xl font-bold text-gray-900">
+                            <h2 className="text-xl font-bold text-gray-900 dark:text-white">
                                 {selectedCategory === 'All' ? 'All Articles' : selectedCategory}
                             </h2>
-                            <span className="text-gray-500 text-sm">{filteredPosts.length} articles</span>
+                            <span className="text-gray-500 dark:text-gray-400 text-sm">{filteredPosts.length} articles</span>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -332,7 +332,7 @@ export default function BlogPage() {
                                     transition={{ delay: index * 0.05 }}
                                 >
                                     <Link href={`/blog/${post.slug}`}>
-                                        <Card className="overflow-hidden hover:shadow-lg transition-shadow h-full group">
+                                        <Card className="overflow-hidden hover:shadow-lg transition-shadow h-full group dark:bg-gray-900 dark:border-gray-800">
                                             <div className="relative h-48">
                                                 <Image
                                                     src={post.image}
@@ -340,18 +340,18 @@ export default function BlogPage() {
                                                     fill
                                                     className="object-cover group-hover:scale-105 transition-transform duration-300"
                                                 />
-                                                <Badge className="absolute top-3 left-3 bg-white/90 text-gray-800">
+                                                <Badge className="absolute top-3 left-3 bg-white/90 dark:bg-gray-900/90 text-gray-800 dark:text-white">
                                                     {post.category}
                                                 </Badge>
                                             </div>
                                             <CardContent className="p-4">
-                                                <h3 className="font-bold text-gray-900 line-clamp-2 mb-2 group-hover:text-[#FF6B35] transition-colors">
+                                                <h3 className="font-bold text-gray-900 dark:text-white line-clamp-2 mb-2 group-hover:text-[#FF6B35] transition-colors">
                                                     {post.title}
                                                 </h3>
-                                                <p className="text-gray-600 text-sm line-clamp-2 mb-4">{post.excerpt}</p>
+                                                <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-2 mb-4">{post.excerpt}</p>
                                                 <div className="flex items-center justify-between">
                                                     <div className="flex items-center gap-2">
-                                                        <div className="relative w-6 h-6 rounded-full overflow-hidden">
+                                                        <div className="relative w-6 h-6 rounded-full overflow-hidden border border-gray-100 dark:border-gray-700">
                                                             <Image
                                                                 src={post.author.avatar}
                                                                 alt={post.author.name}
@@ -359,9 +359,9 @@ export default function BlogPage() {
                                                                 className="object-cover"
                                                             />
                                                         </div>
-                                                        <span className="text-xs text-gray-500">{post.author.name}</span>
+                                                        <span className="text-xs text-gray-500 dark:text-gray-500">{post.author.name}</span>
                                                     </div>
-                                                    <div className="flex items-center gap-2 text-xs text-gray-400">
+                                                    <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500">
                                                         <Clock className="w-3 h-3" />
                                                         {post.readTime} min read
                                                     </div>
@@ -375,7 +375,7 @@ export default function BlogPage() {
 
                         {/* Load More */}
                         <div className="text-center mt-10">
-                            <Button variant="outline" size="lg" className="rounded-full">
+                            <Button variant="outline" size="lg" className="rounded-full dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800">
                                 Load More Articles
                                 <ArrowRight className="w-4 h-4 ml-2" />
                             </Button>

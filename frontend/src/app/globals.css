@@ -4,14 +4,23 @@
 
 @layer base {
   :root {
-    --primary: #FF6B35;
-    --primary-dark: #E55A2B;
-    --secondary: #2D3436;
-    --accent: #00B894;
-    --background: #FAFAFA;
+    --primary: #F15A24;
+    /* Zostel Signature Orange */
+    --primary-dark: #D44D1E;
+    --secondary: #1A1A1A;
+    --accent: #FFD700;
+    --background: #FFFFFF;
     --card: #FFFFFF;
-    --muted: #636E72;
-    --border: #DFE6E9;
+    --muted: #666666;
+    --border: #E6E6E6;
+  }
+
+  .dark {
+    --background: #0F172A;
+    --card: #1E293B;
+    --secondary: #F8FAFC;
+    --muted: #94A3B8;
+    --border: #334155;
   }
 
   * {
@@ -19,17 +28,77 @@
   }
 
   body {
-    @apply bg-background text-secondary;
+    @apply bg-background text-secondary antialiased;
     font-family: var(--font-inter), sans-serif;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-poppins), sans-serif;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-montserrat), sans-serif;
+    @apply font-bold tracking-tight;
   }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  /* Font Utilities - Inspired by modern travel sites */
+  .font-small {
+    @apply text-[10px] md:text-xs font-medium tracking-normal;
+  }
+
+  .font-body {
+    @apply text-sm md:text-base font-normal leading-relaxed;
+  }
+
+  .font-label {
+    @apply text-xs font-semibold uppercase tracking-wide;
+  }
+
+  .font-button {
+    @apply text-sm md:text-base font-semibold tracking-wide;
+  }
+
+  .font-bigbutton {
+    @apply text-base md:text-lg font-bold tracking-wide;
+  }
+
+  .font-subtitle {
+    @apply text-sm md:text-base font-medium;
+  }
+
+  .font-subtitlefocus {
+    @apply text-xs md:text-sm font-semibold;
+  }
+
+  .font-heading-lg {
+    @apply text-3xl md:text-6xl font-bold leading-tight;
+  }
+
+  .font-heading-md {
+    @apply text-2xl md:text-4xl font-bold leading-tight;
+  }
+
+  .font-heading-sm {
+    @apply text-xl md:text-2xl font-semibold leading-snug;
+  }
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
   }
 }

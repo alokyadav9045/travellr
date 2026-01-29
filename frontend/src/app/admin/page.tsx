@@ -4,20 +4,20 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '@/store';
-import { 
-  fetchUsers, 
-  fetchBookings, 
+import {
+  fetchUsers,
+  fetchBookings,
   fetchTrips,
   fetchVendors,
   updateUserStatus,
-  deleteUser 
+  deleteUser
 } from '@/store/slices/adminSlice';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
-import { 
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -32,9 +32,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { 
-  Users, 
-  MapPin, 
+import {
+  Users,
+  MapPin,
   Calendar,
   CreditCard,
   TrendingUp,
@@ -58,13 +58,13 @@ export default function AdminDashboard() {
   const [statusFilter, setStatusFilter] = useState('all');
 
   const { user, isAuthenticated } = useSelector((state: RootState) => state.auth);
-  const { 
-    users, 
-    bookings, 
-    trips, 
+  const {
+    users,
+    bookings,
+    trips,
     vendors,
     analytics,
-    loading 
+    loading
   } = useSelector((state: RootState) => state.admin);
 
   useEffect(() => {
@@ -114,7 +114,7 @@ export default function AdminDashboard() {
 
   const filteredUsers = users?.filter(user => {
     const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         user.email.toLowerCase().includes(searchTerm.toLowerCase());
+      user.email.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || user.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
@@ -124,21 +124,21 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-              <p className="text-gray-600 mt-1">Manage your travel platform</p>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Admin Dashboard</h1>
+              <p className="text-gray-600 dark:text-gray-400 mt-1">Manage your travel platform</p>
             </div>
             <div className="flex items-center gap-4">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="dark:border-gray-800 dark:text-gray-300 dark:hover:bg-gray-800">
                 <Download className="h-4 w-4 mr-2" />
                 Export Data
               </Button>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="dark:border-gray-800 dark:text-gray-300 dark:hover:bg-gray-800">
                 <Filter className="h-4 w-4 mr-2" />
                 Filters
               </Button>
@@ -147,7 +147,7 @@ export default function AdminDashboard() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="mb-6">
+          <TabsList className="mb-6 bg-white dark:bg-gray-900 border dark:border-gray-800 glass-morphism">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="users">Users</TabsTrigger>
             <TabsTrigger value="vendors">Vendors</TabsTrigger>
@@ -160,52 +160,52 @@ export default function AdminDashboard() {
           <TabsContent value="overview">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
               {/* Stats Cards */}
-              <Card>
+              <Card className="dark:bg-gray-900 dark:border-gray-800">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+                  <CardTitle className="text-sm font-medium dark:text-gray-300">Total Users</CardTitle>
                   <Users className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{users?.length || 0}</div>
+                  <div className="text-2xl font-bold dark:text-white">{users?.length || 0}</div>
                   <p className="text-xs text-muted-foreground">
                     +{users?.filter(u => new Date(u.createdAt) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)).length || 0} this week
                   </p>
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="dark:bg-gray-900 dark:border-gray-800">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Total Vendors</CardTitle>
+                  <CardTitle className="text-sm font-medium dark:text-gray-300">Total Vendors</CardTitle>
                   <UserCheck className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{vendors?.length || 0}</div>
+                  <div className="text-2xl font-bold dark:text-white">{vendors?.length || 0}</div>
                   <p className="text-xs text-muted-foreground">
                     {vendors?.filter(v => v.status === 'active').length || 0} active
                   </p>
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="dark:bg-gray-900 dark:border-gray-800">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Total Trips</CardTitle>
+                  <CardTitle className="text-sm font-medium dark:text-gray-300">Total Trips</CardTitle>
                   <MapPin className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{trips?.length || 0}</div>
+                  <div className="text-2xl font-bold dark:text-white">{trips?.length || 0}</div>
                   <p className="text-xs text-muted-foreground">
                     {trips?.filter(t => t.status === 'active').length || 0} active
                   </p>
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="dark:bg-gray-900 dark:border-gray-800">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+                  <CardTitle className="text-sm font-medium dark:text-gray-300">Total Revenue</CardTitle>
                   <CreditCard className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">₹{analytics?.totalRevenue || 0}</div>
+                  <div className="text-2xl font-bold dark:text-white">₹{analytics?.totalRevenue || 0}</div>
                   <p className="text-xs text-muted-foreground">
                     +{analytics?.monthlyGrowth || 0}% from last month
                   </p>
@@ -215,17 +215,17 @@ export default function AdminDashboard() {
 
             {/* Recent Activity */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card>
+              <Card className="dark:bg-gray-900 dark:border-gray-800">
                 <CardHeader>
-                  <CardTitle>Recent Bookings</CardTitle>
+                  <CardTitle className="dark:text-white">Recent Bookings</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     {bookings?.slice(0, 5).map((booking) => (
-                      <div key={booking.id} className="flex items-center justify-between p-3 border rounded-lg">
+                      <div key={booking.id} className="flex items-center justify-between p-3 border dark:border-gray-800 rounded-lg">
                         <div>
-                          <p className="font-medium">{booking.trip.title}</p>
-                          <p className="text-sm text-gray-500">{booking.customer.name}</p>
+                          <p className="font-medium dark:text-gray-200">{booking.trip.title}</p>
+                          <p className="text-sm text-gray-500 dark:text-gray-400">{booking.customer.name}</p>
                         </div>
                         <Badge className={getStatusBadge(booking.status)}>
                           {booking.status}
@@ -236,17 +236,17 @@ export default function AdminDashboard() {
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="dark:bg-gray-900 dark:border-gray-800">
                 <CardHeader>
-                  <CardTitle>Recent Users</CardTitle>
+                  <CardTitle className="dark:text-white">Recent Users</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     {users?.slice(0, 5).map((user) => (
-                      <div key={user.id} className="flex items-center justify-between p-3 border rounded-lg">
+                      <div key={user.id} className="flex items-center justify-between p-3 border dark:border-gray-800 rounded-lg">
                         <div>
-                          <p className="font-medium">{user.name}</p>
-                          <p className="text-sm text-gray-500">{user.email}</p>
+                          <p className="font-medium dark:text-gray-200">{user.name}</p>
+                          <p className="text-sm text-gray-500 dark:text-gray-400">{user.email}</p>
                         </div>
                         <Badge className={getStatusBadge(user.status)}>
                           {user.role}
@@ -261,10 +261,10 @@ export default function AdminDashboard() {
 
           {/* Users Tab */}
           <TabsContent value="users">
-            <Card>
+            <Card className="dark:bg-gray-900 dark:border-gray-800">
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <CardTitle>User Management</CardTitle>
+                  <CardTitle className="dark:text-white">User Management</CardTitle>
                   <div className="flex items-center gap-4">
                     <div className="relative">
                       <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -272,11 +272,11 @@ export default function AdminDashboard() {
                         placeholder="Search users..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="pl-10 w-64"
+                        className="pl-10 w-64 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
                       />
                     </div>
                     <Select value={statusFilter} onValueChange={setStatusFilter}>
-                      <SelectTrigger className="w-32">
+                      <SelectTrigger className="w-32 dark:bg-gray-800 dark:border-gray-700 dark:text-white">
                         <SelectValue placeholder="Status" />
                       </SelectTrigger>
                       <SelectContent>
@@ -289,118 +289,123 @@ export default function AdminDashboard() {
                 </div>
               </CardHeader>
               <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>User</TableHead>
-                      <TableHead>Role</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Joined</TableHead>
-                      <TableHead>Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredUsers?.map((user) => (
-                      <TableRow key={user.id}>
-                        <TableCell>
-                          <div>
-                            <p className="font-medium">{user.name}</p>
-                            <p className="text-sm text-gray-500">{user.email}</p>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant="outline" className="capitalize">
-                            {user.role}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <Badge className={getStatusBadge(user.status)}>
-                            {user.status}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          {new Date(user.createdAt).toLocaleDateString()}
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-2">
-                            <Button variant="outline" size="sm">
-                              <Eye className="h-4 w-4" />
-                            </Button>
-                            {user.status === 'active' ? (
-                              <Button 
-                                variant="outline" 
-                                size="sm"
-                                onClick={() => handleUserStatusUpdate(user.id, 'suspended')}
-                              >
-                                <UserX className="h-4 w-4" />
-                              </Button>
-                            ) : (
-                              <Button 
-                                variant="outline" 
-                                size="sm"
-                                onClick={() => handleUserStatusUpdate(user.id, 'active')}
-                              >
-                                <UserCheck className="h-4 w-4" />
-                              </Button>
-                            )}
-                            <Button 
-                              variant="outline" 
-                              size="sm"
-                              onClick={() => handleDeleteUser(user.id)}
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </TableCell>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="dark:border-gray-800">
+                        <TableHead className="dark:text-gray-400">User</TableHead>
+                        <TableHead className="dark:text-gray-400">Role</TableHead>
+                        <TableHead className="dark:text-gray-400">Status</TableHead>
+                        <TableHead className="dark:text-gray-400">Joined</TableHead>
+                        <TableHead className="dark:text-gray-400 text-right">Actions</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredUsers?.map((user) => (
+                        <TableRow key={user.id} className="dark:border-gray-800 hover:bg-gray-50/50 dark:hover:bg-gray-800/50">
+                          <TableCell>
+                            <div>
+                              <p className="font-medium dark:text-gray-200">{user.name}</p>
+                              <p className="text-sm text-gray-500 dark:text-gray-400">{user.email}</p>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant="outline" className="capitalize dark:border-gray-700 dark:text-gray-300">
+                              {user.role}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>
+                            <Badge className={getStatusBadge(user.status)}>
+                              {user.status}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="dark:text-gray-300">
+                            {new Date(user.createdAt).toLocaleDateString()}
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex items-center justify-end gap-2">
+                              <Button variant="outline" size="sm" className="dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800">
+                                <Eye className="h-4 w-4" />
+                              </Button>
+                              {user.status === 'active' ? (
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => handleUserStatusUpdate(user.id, 'suspended')}
+                                  className="dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+                                >
+                                  <UserX className="h-4 w-4" />
+                                </Button>
+                              ) : (
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => handleUserStatusUpdate(user.id, 'active')}
+                                  className="dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+                                >
+                                  <UserCheck className="h-4 w-4" />
+                                </Button>
+                              )}
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleDeleteUser(user.id)}
+                                className="dark:border-gray-700 dark:text-red-400 dark:hover:bg-red-950/20"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
 
           {/* Vendors Tab */}
           <TabsContent value="vendors">
-            <Card>
+            <Card className="dark:bg-gray-900 dark:border-gray-800">
               <CardHeader>
-                <CardTitle>Vendor Management</CardTitle>
+                <CardTitle className="dark:text-white">Vendor Management</CardTitle>
               </CardHeader>
               <CardContent>
                 <Table>
                   <TableHeader>
-                    <TableRow>
-                      <TableHead>Vendor</TableHead>
-                      <TableHead>Business</TableHead>
-                      <TableHead>Trips</TableHead>
-                      <TableHead>Revenue</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Actions</TableHead>
+                    <TableRow className="dark:border-gray-800">
+                      <TableHead className="dark:text-gray-400">Vendor</TableHead>
+                      <TableHead className="dark:text-gray-400">Business</TableHead>
+                      <TableHead className="dark:text-gray-400">Trips</TableHead>
+                      <TableHead className="dark:text-gray-400">Revenue</TableHead>
+                      <TableHead className="dark:text-gray-400">Status</TableHead>
+                      <TableHead className="dark:text-gray-400 text-right">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {vendors?.map((vendor) => (
-                      <TableRow key={vendor.id}>
+                      <TableRow key={vendor.id} className="dark:border-gray-800 hover:bg-gray-50/50 dark:hover:bg-gray-800/50">
                         <TableCell>
                           <div>
-                            <p className="font-medium">{vendor.name}</p>
-                            <p className="text-sm text-gray-500">{vendor.email}</p>
+                            <p className="font-medium dark:text-gray-200">{vendor.name}</p>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">{vendor.email}</p>
                           </div>
                         </TableCell>
-                        <TableCell>{vendor.businessName}</TableCell>
-                        <TableCell>{vendor.totalTrips}</TableCell>
-                        <TableCell>₹{vendor.totalRevenue}</TableCell>
+                        <TableCell className="dark:text-gray-300">{vendor.businessName}</TableCell>
+                        <TableCell className="dark:text-gray-300">{vendor.totalTrips}</TableCell>
+                        <TableCell className="dark:text-gray-300">₹{vendor.totalRevenue}</TableCell>
                         <TableCell>
                           <Badge className={getStatusBadge(vendor.status)}>
                             {vendor.status}
                           </Badge>
                         </TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-2">
-                            <Button variant="outline" size="sm">
+                        <TableCell className="text-right">
+                          <div className="flex items-center justify-end gap-2">
+                            <Button variant="outline" size="sm" className="dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800">
                               <Eye className="h-4 w-4" />
                             </Button>
-                            <Button variant="outline" size="sm">
+                            <Button variant="outline" size="sm" className="dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800">
                               <Edit className="h-4 w-4" />
                             </Button>
                           </div>

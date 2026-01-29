@@ -17,8 +17,8 @@ interface TripCardProps {
   isWishlisted?: boolean;
 }
 
-export function TripCard({ 
-  trip, 
+export function TripCard({
+  trip,
   variant = 'default',
   showVendor = false,
   onWishlistToggle,
@@ -45,7 +45,7 @@ export function TripCard({
               className="w-full h-full object-cover"
             />
           </Link>
-          
+
           {/* Wishlist Button */}
           <button
             onClick={(e) => {
@@ -54,11 +54,11 @@ export function TripCard({
             }}
             className="absolute top-3 right-3 w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white transition-colors"
           >
-            <Heart 
+            <Heart
               className={cn(
                 'h-5 w-5 transition-colors',
                 isWishlisted ? 'fill-red-500 text-red-500' : 'text-gray-600'
-              )} 
+              )}
             />
           </button>
 
@@ -78,7 +78,7 @@ export function TripCard({
                 <MapPin className="h-4 w-4" />
                 <span>{trip.location.city}, {trip.location.country}</span>
               </div>
-              
+
               <Link href={`/trips/${trip.slug}`}>
                 <h3 className="text-lg font-semibold text-gray-900 group-hover:text-[#FF6B35] transition-colors line-clamp-2">
                   {trip.title}
@@ -114,7 +114,7 @@ export function TripCard({
                 </span>
               )}
               <span className="text-xl font-bold text-[#FF6B35]">
-                {hasDiscount 
+                {hasDiscount
                   ? formatPrice(trip.price.discountedAmount!, trip.price.currency)
                   : formattedPrice
                 }
@@ -142,6 +142,7 @@ export function TripCard({
             src={primaryImage?.url || '/images/placeholder-trip.jpg'}
             alt={trip.title}
             fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover group-hover:scale-105 transition-transform duration-500"
           />
         </Link>
@@ -157,11 +158,11 @@ export function TripCard({
           }}
           className="absolute top-3 right-3 w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white transition-colors z-10"
         >
-          <Heart 
+          <Heart
             className={cn(
               'h-5 w-5 transition-colors',
               isWishlisted ? 'fill-red-500 text-red-500' : 'text-gray-600'
-            )} 
+            )}
           />
         </button>
 
@@ -222,7 +223,7 @@ export function TripCard({
             </span>
           )}
           <span className="text-xl font-bold text-[#FF6B35]">
-            {hasDiscount 
+            {hasDiscount
               ? formatPrice(trip.price.discountedAmount!, trip.price.currency)
               : formattedPrice
             }

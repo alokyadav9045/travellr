@@ -24,7 +24,16 @@ const start = async () => {
     // Connect to services
     await connectDB();
     const redis = connectRedis();
-    if (redis && redis.connect) await redis.connect();
+    // Use try/catch for redis connect to prevent crash
+    try {
+      if (redis && redis.connect) {
+        await redis.connect().catch(err => {
+          logger.warn('Redis connection failed on startup, will retry in background', { error: err.message });
+        });
+      }
+    } catch (err) {
+      logger.warn('Redis connection error', { error: err.message });
+    }
 
     const app = createApp();
     const server = http.createServer(app);
@@ -33,10 +42,10 @@ const start = async () => {
     try {
       cleanupCron.start();
       logger.info('Cleanup cron job started');
-      
+
       payrollCron.start();
       logger.info('Payroll cron job started');
-      
+
       reminderCron.start();
       logger.info('Reminder cron job started');
     } catch (error) {
@@ -66,7 +75,7 @@ const start = async () => {
     // Graceful shutdown
     const shutdown = async (signal) => {
       logger.info(`${signal} received. Shutting down server...`);
-      
+
       // Stop cron jobs
       try {
         cleanupCron.stop();

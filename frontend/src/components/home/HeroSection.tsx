@@ -9,14 +9,15 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils/cn';
+import { cleanImageUrl } from '@/lib/utils/images';
 
 const popularDestinations = [
-  { name: 'Manali', image: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=200&q=80' },
-  { name: 'Goa', image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=200&q=80' },
-  { name: 'Rishikesh', image: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=200&q=80' },
-  { name: 'Ladakh', image: 'https://images.unsplash.com/photo-1506038634487-60a69ae4b7b1?w=200&q=80' },
-  { name: 'Kerala', image: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=200&q=80' },
-  { name: 'Jaipur', image: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?w=200&q=80' },
+  { name: 'Manali', image: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23' },
+  { name: 'Goa', image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2' },
+  { name: 'Rishikesh', image: 'https://images.unsplash.com/photo-1544198365-f5d60b6d8190' },
+  { name: 'Ladakh', image: 'https://images.unsplash.com/photo-1506038634487-60a69ae4b7b1' },
+  { name: 'Kerala', image: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944' },
+  { name: 'Jaipur', image: 'https://images.unsplash.com/photo-1599661046289-e31897846e41' },
 ];
 
 // Deals banner data
@@ -108,8 +109,13 @@ function CountdownTimer({ endTime }: { endTime: Date }) {
     return () => clearInterval(timer);
   }, [endTime]);
 
+  const [isMounted, setIsMounted] = React.useState(false);
+  useEffect(() => setIsMounted(true), []);
+
+  if (!isMounted) return <div className="flex items-center gap-1 text-sm font-mono opacity-0">...</div>;
+
   return (
-    <div className="flex items-center gap-1 text-sm font-mono">
+    <div className="flex items-center gap-1 text-sm font-mono" suppressHydrationWarning>
       <span className="bg-white/20 px-2 py-0.5 rounded">{timeLeft.days}d</span>
       <span>:</span>
       <span className="bg-white/20 px-2 py-0.5 rounded">{String(timeLeft.hours).padStart(2, '0')}h</span>
@@ -136,8 +142,8 @@ export function HeroSection() {
     offset: ["start start", "end start"]
   });
 
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-  const textY = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const textY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
 
   const handleSearch = () => {
     const params = new URLSearchParams();
@@ -148,6 +154,8 @@ export function HeroSection() {
     router.push(`/trips?${params.toString()}`);
   };
 
+  const titleWords = "Discover Your Next Unforgettable Journey".split(" ");
+
   return (
     <>
       {/* Deals Banner */}
@@ -157,7 +165,7 @@ export function HeroSection() {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="bg-gradient-to-r from-[#FF6B35] via-[#E55A2B] to-[#FF6B35] text-white relative overflow-hidden"
+            className="bg-gradient-to-r from-[#F15A24] via-[#E55A2B] to-[#F15A24] text-white relative overflow-hidden z-[60]"
           >
             <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-center gap-4 flex-wrap">
               <div className="flex items-center gap-2">
@@ -166,13 +174,14 @@ export function HeroSection() {
               </div>
               <CountdownTimer endTime={dealsBanner.endTime} />
               <Link href={dealsBanner.link}>
-                <Button size="sm" className="bg-white text-[#FF6B35] hover:bg-gray-100 font-semibold h-8">
+                <Button size="sm" className="bg-white text-[#F15A24] hover:bg-gray-100 font-semibold h-8" suppressHydrationWarning>
                   Book Now <ArrowRight className="w-4 h-4 ml-1" />
                 </Button>
               </Link>
               <button
                 onClick={() => setShowDealsBanner(false)}
                 className="absolute right-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white"
+                suppressHydrationWarning
               >
                 <X className="w-4 h-4" />
               </button>
@@ -187,7 +196,7 @@ export function HeroSection() {
           style={{ y: backgroundY }}
           className="absolute inset-0 z-0"
         >
-          {/* Video Background (with fallback to gradient) */}
+          {/* Video Background */}
           <div className="absolute inset-0">
             <video
               autoPlay
@@ -195,18 +204,16 @@ export function HeroSection() {
               loop
               playsInline
               poster="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover scale-110"
             >
               <source src="https://player.vimeo.com/external/434045526.hd.mp4?s=c27eecc69a27dbc4ff2b87d38afc35f1a9e7c02d&profile_id=175" type="video/mp4" />
             </video>
-            {/* Dark Overlay */}
-            <div className="absolute inset-0 bg-black/50" />
+            <div className="absolute inset-0 bg-black/40" />
           </div>
 
           {/* Animated gradient orbs */}
-          <div className="absolute top-1/4 -left-20 w-96 h-96 bg-[#FF6B35]/30 rounded-full filter blur-3xl animate-pulse" />
-          <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-purple-500/20 rounded-full filter blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/10 rounded-full filter blur-3xl" />
+          <div className="absolute top-1/4 -left-20 w-96 h-96 bg-[#F15A24]/20 rounded-full filter blur-3xl animate-pulse" />
+          <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-purple-500/10 rounded-full filter blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
         </motion.div>
 
         {/* Content */}
@@ -214,183 +221,172 @@ export function HeroSection() {
           style={{ y: textY }}
           className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20"
         >
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center"
-          >
+          <div className="text-center">
             {/* Tagline */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.3 }}
-              className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full mb-6"
+              transition={{ delay: 0.2, type: "spring", stiffness: 100 }}
+              className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full mb-8 border border-white/20"
             >
-              <TrendingUp className="w-4 h-4 text-[#FF6B35]" />
-              <span className="text-white/90 text-sm font-medium">Trusted by 50,000+ travelers</span>
+              <TrendingUp className="w-4 h-4 text-[#F15A24]" />
+              <span className="text-white text-sm font-semibold tracking-wide uppercase">Trusted by 50,000+ travelers</span>
             </motion.div>
 
-            {/* Main Heading */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
-              Discover Your Next
-              <span className="block mt-2 bg-gradient-to-r from-[#FF6B35] via-yellow-400 to-[#FF6B35] bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient">
-                Unforgettable Journey
-              </span>
+            {/* Main Heading with Staggered Words */}
+            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white mb-8 leading-[1.1] tracking-tight">
+              {titleWords.slice(0, 3).map((word, i) => (
+                <motion.span
+                  key={i}
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 + (i * 0.1), duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                  className="inline-block mr-4"
+                >
+                  {word}
+                </motion.span>
+              ))}
+              <br />
+              <motion.span
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                className="inline-block bg-gradient-to-r from-[#F15A24] via-yellow-400 to-[#F15A24] bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient"
+              >
+                {titleWords.slice(3).join(" ")}
+              </motion.span>
             </h1>
 
             {/* Subheading */}
-            <p className="text-lg sm:text-xl text-white/80 max-w-2xl mx-auto mb-12">
-              Explore curated trips by local experts. From serene mountains to vibrant beaches,
-              find experiences that match your wanderlust.
-            </p>
-
-            {/* Enhanced Search Box with Date Picker */}
-            <motion.div
+            <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="bg-white rounded-2xl shadow-2xl p-4 md:p-6 max-w-5xl mx-auto"
+              transition={{ delay: 0.9, duration: 0.8 }}
+              className="text-xl sm:text-2xl text-white/90 max-w-3xl mx-auto mb-14 font-medium leading-relaxed"
             >
-              <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-                {/* Search Input */}
-                <div className="md:col-span-2 relative">
-                  <label className="block text-xs font-medium text-gray-500 mb-1 text-left">Where to?</label>
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+              Explore curated trips by local experts. From serene mountains to vibrant beaches,
+              find experiences that match your wanderlust.
+            </motion.p>
+
+            {/* Search Box */}
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.1, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="relative pb-20 z-50 max-w-5xl mx-auto"
+            >
+              <div className="flex relative z-[1] md:flex-row flex-col items-center gap-2 shadow-all-in-one dark:shadow-all-in-one-dark bg-light-background-primary dark:bg-dark-background-primary p-2 rounded-3xl md:rounded-full w-full md:w-auto">
+                {/* Location Search */}
+                <div role="button" tabIndex={0} className="cursor-text flex items-center gap-4 py-2 px-4 md:pl-3 md:pr-4 md:ml-1 hover:bg-light-background-secondary dark:hover:bg-white/5 rounded-2xl md:rounded-full flex-1 md:flex-none">
+                  <span className="text-2xl">🧭</span>
+                  <div className="flex flex-col items-start" role="button" aria-haspopup="dialog" aria-expanded="false" data-state="closed">
+                    <span className="font-small text-light-text-secondary dark:text-gray-400">Where to?</span>
                     <input
-                      type="text"
-                      placeholder="Search destinations..."
+                      className="font-body placeholder:font-body p-0 m-0 w-full md:w-60 placeholder:text-light-text-secondary dark:placeholder:text-gray-500 dark:text-light-text-primary focus:outline-none bg-transparent"
+                      placeholder="Search Destination, Stay, or Trip"
+                      autoComplete="off"
+                      tabIndex={-1}
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-[#FF6B35] focus:ring-2 focus:ring-[#FF6B35]/20 outline-none transition-all text-gray-900"
                     />
                   </div>
                 </div>
 
-                {/* Check In */}
-                <div className="relative">
-                  <label className="block text-xs font-medium text-gray-500 mb-1 text-left">Check In</label>
-                  <div className="relative">
-                    <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" />
-                    <input
-                      type="date"
-                      value={checkInDate}
-                      onChange={(e) => setCheckInDate(e.target.value)}
-                      min={new Date().toISOString().split('T')[0]}
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-[#FF6B35] focus:ring-2 focus:ring-[#FF6B35]/20 outline-none transition-all text-gray-900 appearance-none"
-                    />
-                  </div>
-                </div>
+                <div className="w-full md:w-px md:h-8 h-px bg-light-stroke-primary dark:bg-dark-stroke-primary hidden md:block"></div>
 
-                {/* Check Out */}
-                <div className="relative">
-                  <label className="block text-xs font-medium text-gray-500 mb-1 text-left">Check Out</label>
-                  <div className="relative">
-                    <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" />
-                    <input
-                      type="date"
-                      value={checkOutDate}
-                      onChange={(e) => setCheckOutDate(e.target.value)}
-                      min={checkInDate || new Date().toISOString().split('T')[0]}
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-[#FF6B35] focus:ring-2 focus:ring-[#FF6B35]/20 outline-none transition-all text-gray-900 appearance-none"
-                    />
+                {/* Date Selection */}
+                <div className="w-full md:w-[240px]">
+                  <div className="flex w-full md:w-[240px] justify-between md:justify-start items-center gap-4 py-2 px-4 md:pl-3 md:pr-4 md:ml-1 hover:bg-light-background-secondary dark:hover:bg-white/5 rounded-2xl md:rounded-full cursor-pointer">
+                    <div className="flex items-center gap-4">
+                      <span className="text-2xl">🗓️</span>
+                      <div className="flex flex-col text-left items-start w-16">
+                        <span className="font-small text-light-text-secondary dark:text-gray-400">Check-in</span>
+                        {/* Use input date overlay for functionality while keeping design */}
+                        <div className="relative">
+                          <input
+                            type="date"
+                            value={checkInDate}
+                            onChange={(e) => setCheckInDate(e.target.value)}
+                            className="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10"
+                          />
+                          <span className="font-body dark:text-light-text-primary whitespace-nowrap">
+                            {checkInDate ? new Date(checkInDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : 'Add Date'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-light-icon-viewonly fill-current w-4 h-4 hidden md:block">
+                      <path fill="currentColor" fillRule="evenodd" d="M12.72 19.536a2 2 0 0 1-.256-2.816L14.73 14H5a2 2 0 1 1 0-4h9.73l-2.266-2.72a2 2 0 1 1 3.072-2.56l5 6a2 2 0 0 1 0 2.56l-5 6a2 2 0 0 1-2.816.256Z" clipRule="evenodd"></path>
+                    </svg>
+
+                    <div className="flex items-center gap-4 md:hidden">
+                      <div className="flex flex-col text-left items-start w-16">
+                        <span className="font-small text-light-text-secondary dark:text-gray-400">Check-out</span>
+                        <div className="relative">
+                          <input
+                            type="date"
+                            value={checkOutDate}
+                            onChange={(e) => setCheckOutDate(e.target.value)}
+                            className="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10"
+                          />
+                          <span className="font-body dark:text-light-text-primary whitespace-nowrap">
+                            {checkOutDate ? new Date(checkOutDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : 'Add Date'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
                 {/* Search Button */}
-                <div className="flex items-end">
-                  <Button
-                    onClick={handleSearch}
-                    className="w-full px-6 py-3 h-[50px] text-base font-semibold rounded-xl bg-gradient-to-r from-[#FF6B35] to-[#E55A2B] hover:shadow-lg hover:shadow-[#FF6B35]/25 transition-all"
-                  >
-                    <Search className="h-5 w-5 mr-2" />
-                    Search
-                  </Button>
+                <div role="button" tabIndex={0} onClick={handleSearch} className="cursor-pointer md:ml-3 bg-light-brand-zostel hover:bg-[#D44D1E] h-14 md:h-16 w-full md:w-32 flex items-center justify-center rounded-2xl md:rounded-full transition-colors shadow-lg shadow-orange-500/30">
+                  <span className="font-bigbutton text-white">Search</span>
                 </div>
               </div>
 
-              {/* Popular Destinations with Images */}
-              <div className="mt-6 pt-4 border-t border-gray-100">
-                <p className="text-xs text-gray-500 mb-3 text-left">Popular destinations:</p>
-                <div className="flex flex-wrap gap-2">
-                  {popularDestinations.map((dest) => (
-                    <button
-                      key={dest.name}
-                      onClick={() => router.push(`/destinations/${dest.name.toLowerCase()}`)}
-                      className="flex items-center gap-2 px-3 py-1.5 bg-gray-50 hover:bg-[#FF6B35]/10 hover:border-[#FF6B35]/30 border border-gray-200 rounded-full transition-all group"
-                    >
-                      <div className="relative w-5 h-5 rounded-full overflow-hidden">
-                        <Image
-                          src={dest.image}
-                          alt={dest.name}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                      <span className="text-sm text-gray-700 group-hover:text-[#FF6B35]">{dest.name}</span>
-                    </button>
-                  ))}
-                </div>
+              {/* Banner/Badge */}
+              <div className="absolute inset-x-0 top-[calc(100%-2rem)] md:top-14 pt-10 flex items-center justify-center gap-2 bg-light-status-progress dark:bg-dark-status-progress p-4 rounded-b-3xl md:rounded-b-4xl -z-10 mx-4 md:mx-10 shadow-sm">
+                <span className="text-lg">🌟</span>
+                <span className="font-subtitlefocus text-light-text-primary dark:text-dark-text-primary text-center leading-tight">Book directly and get best prices + enjoy early check-in, late check-out & exclusive deals*</span>
               </div>
             </motion.div>
 
-            {/* Trust Badges */}
+            {/* Popular Destinations */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.8 }}
-              className="mt-8 flex flex-wrap items-center justify-center gap-4"
+              transition={{ delay: 1.4 }}
+              className="mt-10 flex flex-wrap justify-center gap-4"
             >
-              <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
-                <span className="text-green-400 text-lg">✓</span>
-                <span className="text-white/80 text-sm">Verified Vendors</span>
-              </div>
-              <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
-                <span className="text-green-400 text-lg">✓</span>
-                <span className="text-white/80 text-sm">Secure Payments</span>
-              </div>
-              <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
-                <span className="text-green-400 text-lg">✓</span>
-                <span className="text-white/80 text-sm">24/7 Support</span>
-              </div>
-            </motion.div>
-
-            {/* Animated Stats */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1 }}
-              className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto"
-            >
-              {stats.map((stat) => (
-                <div key={stat.label} className="text-center">
-                  <AnimatedCounter value={stat.value} suffix={stat.suffix} />
-                  <div className="text-white/60 text-sm">{stat.label}</div>
-                </div>
+              <span className="text-white/60 text-sm font-semibold uppercase tracking-widest my-auto mr-2">Top Picks:</span>
+              {popularDestinations.map((dest, i) => (
+                <motion.button
+                  whileHover={{ scale: 1.1, y: -2 }}
+                  key={dest.name}
+                  onClick={() => router.push(`/destinations/${dest.name.toLowerCase()}`)}
+                  className="flex items-center gap-2 bg-white/10 hover:bg-white/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 transition-all"
+                >
+                  <div className="w-6 h-6 rounded-full overflow-hidden relative">
+                    <Image src={cleanImageUrl(dest.image)} alt={dest.name} fill sizes="24px" className="object-cover" />
+                  </div>
+                  <span className="text-white font-bold text-sm">{dest.name}</span>
+                </motion.button>
               ))}
             </motion.div>
-          </motion.div>
+          </div>
         </motion.div>
 
         {/* Scroll Indicator */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ repeat: Infinity, duration: 2 }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
         >
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ repeat: Infinity, duration: 2 }}
-            className="w-6 h-10 border-2 border-white/40 rounded-full flex items-start justify-center p-2"
-          >
-            <div className="w-1.5 h-3 bg-white/60 rounded-full" />
-          </motion.div>
+          <div className="w-1 h-12 bg-gradient-to-b from-[#F15A24] to-transparent rounded-full" />
         </motion.div>
       </section>
 
-      {/* Add gradient animation keyframes */}
       <style jsx global>{`
         @keyframes gradient {
           0% { background-position: 0% 50%; }

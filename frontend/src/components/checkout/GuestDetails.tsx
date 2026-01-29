@@ -18,11 +18,11 @@ interface GuestDetailsProps {
   onLeadGuestChange: (details: any) => void;
 }
 
-export default function GuestDetails({ 
-  guestCount, 
-  onGuestCountChange, 
-  leadGuestDetails, 
-  onLeadGuestChange 
+export default function GuestDetails({
+  guestCount,
+  onGuestCountChange,
+  leadGuestDetails,
+  onLeadGuestChange
 }: GuestDetailsProps) {
   const handleInputChange = (field: string, value: string) => {
     onLeadGuestChange({
@@ -34,7 +34,7 @@ export default function GuestDetails({
   return (
     <div className="bg-white rounded-lg shadow-sm border p-6">
       <h2 className="text-xl font-semibold text-gray-900 mb-6">Guest Details</h2>
-      
+
       {/* Guest Count */}
       <div className="mb-6">
         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -63,13 +63,15 @@ export default function GuestDetails({
       {/* Lead Guest Details */}
       <div className="space-y-4">
         <h3 className="text-lg font-medium text-gray-900">Lead Guest Information</h3>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1 cursor-pointer">
               First Name *
             </label>
             <input
+              id="firstName"
+              name="firstName"
               type="text"
               value={leadGuestDetails?.firstName || ''}
               onChange={(e) => handleInputChange('firstName', e.target.value)}
@@ -78,12 +80,14 @@ export default function GuestDetails({
               required
             />
           </div>
-          
+
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-1 cursor-pointer">
               Last Name *
             </label>
             <input
+              id="lastName"
+              name="lastName"
               type="text"
               value={leadGuestDetails?.lastName || ''}
               onChange={(e) => handleInputChange('lastName', e.target.value)}
@@ -92,12 +96,14 @@ export default function GuestDetails({
               required
             />
           </div>
-          
+
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="leadEmail" className="block text-sm font-medium text-gray-700 mb-1 cursor-pointer">
               Email Address *
             </label>
             <input
+              id="leadEmail"
+              name="email"
               type="email"
               value={leadGuestDetails?.email || ''}
               onChange={(e) => handleInputChange('email', e.target.value)}
@@ -106,12 +112,14 @@ export default function GuestDetails({
               required
             />
           </div>
-          
+
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="leadPhone" className="block text-sm font-medium text-gray-700 mb-1 cursor-pointer">
               Phone Number *
             </label>
             <input
+              id="leadPhone"
+              name="phone"
               type="tel"
               value={leadGuestDetails?.phone || ''}
               onChange={(e) => handleInputChange('phone', e.target.value)}

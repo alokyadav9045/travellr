@@ -34,18 +34,18 @@ export default function ProfilePage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
         <Header />
         <div className="min-h-[70vh] flex items-center justify-center">
-          <Card className="max-w-md w-full border-0 shadow-xl rounded-2xl">
+          <Card className="max-w-md w-full border-0 shadow-xl rounded-2xl dark:bg-gray-900 dark:shadow-gray-900/20">
             <CardContent className="p-8 text-center">
               <div className="w-16 h-16 bg-[#FF6B35]/10 rounded-full flex items-center justify-center mx-auto mb-6">
                 <User className="w-8 h-8 text-[#FF6B35]" />
               </div>
-              <h2 className="text-2xl font-bold mb-4">Sign in Required</h2>
-              <p className="text-gray-600 mb-6">Please sign in to view your profile</p>
+              <h2 className="text-2xl font-bold mb-4 dark:text-white">Sign in Required</h2>
+              <p className="text-gray-600 dark:text-gray-400 mb-6">Please sign in to view your profile</p>
               <Link href="/login">
-                <Button className="w-full bg-gradient-to-r from-[#FF6B35] to-[#E55A2B]">Sign In</Button>
+                <Button className="w-full bg-gradient-to-r from-[#FF6B35] to-[#E55A2B] text-white">Sign In</Button>
               </Link>
             </CardContent>
           </Card>
@@ -56,9 +56,9 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
       <Header />
-      
+
       {/* Hero Section with Gradient */}
       <section className="relative bg-gradient-to-br from-[#2D3436] via-[#636E72] to-[#2D3436] pt-32 pb-24">
         {/* Decorative Elements */}
@@ -66,7 +66,7 @@ export default function ProfilePage() {
           <div className="absolute top-20 left-10 w-72 h-72 bg-[#FF6B35]/20 rounded-full blur-3xl" />
           <div className="absolute bottom-10 right-10 w-96 h-96 bg-[#00B894]/10 rounded-full blur-3xl" />
         </div>
-        
+
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -86,12 +86,12 @@ export default function ProfilePage() {
                 <Camera className="w-5 h-5" />
               </button>
               {user.isEmailVerified && (
-                <div className="absolute -top-2 -right-2 w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center border-2 border-white">
+                <div className="absolute -top-2 -right-2 w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center border-2 border-white dark:border-gray-800">
                   <CheckCircle className="w-5 h-5 text-white" />
                 </div>
               )}
             </div>
-            
+
             <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">{user.name}</h1>
             <p className="text-white/70 flex items-center justify-center gap-2 mb-4">
               <Mail className="w-4 h-4" />
@@ -113,17 +113,17 @@ export default function ProfilePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <Card className="border-0 shadow-xl rounded-2xl">
-              <CardHeader className="border-b border-gray-100">
+            <Card className="border-0 shadow-xl rounded-2xl dark:bg-gray-900 dark:shadow-gray-900/20">
+              <CardHeader className="border-b border-gray-100 dark:border-gray-800">
                 <div className="flex justify-between items-center">
-                  <CardTitle className="text-xl flex items-center gap-2">
+                  <CardTitle className="text-xl flex items-center gap-2 text-gray-900 dark:text-white">
                     <User className="w-5 h-5 text-[#FF6B35]" />
                     Personal Information
                   </CardTitle>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     onClick={() => setIsEditing(!isEditing)}
-                    className="rounded-xl hover:bg-[#FF6B35]/5 hover:border-[#FF6B35] hover:text-[#FF6B35]"
+                    className="rounded-xl hover:bg-[#FF6B35]/5 hover:border-[#FF6B35] hover:text-[#FF6B35] dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
                   >
                     {isEditing ? 'Cancel' : (
                       <>
@@ -138,92 +138,96 @@ export default function ProfilePage() {
                 {isEditing ? (
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                      <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 cursor-pointer">Full Name</label>
                       <div className="relative">
                         <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                        <Input 
-                          defaultValue={user.name} 
-                          className="pl-12 h-12 rounded-xl border-gray-200 focus:border-[#FF6B35] focus:ring-[#FF6B35]"
+                        <Input
+                          id="fullName"
+                          name="name"
+                          defaultValue={user.name}
+                          className="pl-12 h-12 rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-[#FF6B35] focus:ring-[#FF6B35]"
                         />
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email</label>
                       <div className="relative">
                         <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                        <Input 
-                          type="email" 
-                          defaultValue={user.email} 
-                          disabled 
-                          className="pl-12 h-12 rounded-xl bg-gray-50"
+                        <Input
+                          type="email"
+                          defaultValue={user.email}
+                          disabled
+                          className="pl-12 h-12 rounded-xl bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700"
                         />
                       </div>
-                      <p className="text-xs text-gray-500 mt-1.5">Email cannot be changed</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1.5">Email cannot be changed</p>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+                      <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 cursor-pointer">Phone</label>
                       <div className="relative">
                         <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                        <Input 
-                          type="tel" 
-                          defaultValue={user.phone || ''} 
+                        <Input
+                          id="phone"
+                          name="phone"
+                          type="tel"
+                          defaultValue={user.phone || ''}
                           placeholder="Add phone number"
-                          className="pl-12 h-12 rounded-xl border-gray-200 focus:border-[#FF6B35] focus:ring-[#FF6B35]"
+                          className="pl-12 h-12 rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-[#FF6B35] focus:ring-[#FF6B35]"
                         />
                       </div>
                     </div>
-                    <Button className="w-full h-12 rounded-xl bg-gradient-to-r from-[#FF6B35] to-[#E55A2B] hover:shadow-lg hover:shadow-[#FF6B35]/25">
+                    <Button className="w-full h-12 rounded-xl bg-gradient-to-r from-[#FF6B35] to-[#E55A2B] hover:shadow-lg hover:shadow-[#FF6B35]/25 text-white">
                       Save Changes
                     </Button>
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="bg-gray-50 rounded-xl p-4">
+                    <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
                       <div className="flex items-center gap-3 mb-2">
                         <User className="w-5 h-5 text-[#FF6B35]" />
-                        <p className="text-sm text-gray-500">Full Name</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">Full Name</p>
                       </div>
-                      <p className="font-semibold text-gray-900 ml-8">{user.name}</p>
+                      <p className="font-semibold text-gray-900 dark:text-white ml-8">{user.name}</p>
                     </div>
-                    <div className="bg-gray-50 rounded-xl p-4">
+                    <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
                       <div className="flex items-center gap-3 mb-2">
                         <Mail className="w-5 h-5 text-[#FF6B35]" />
-                        <p className="text-sm text-gray-500">Email Address</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">Email Address</p>
                       </div>
-                      <p className="font-semibold text-gray-900 ml-8">{user.email}</p>
+                      <p className="font-semibold text-gray-900 dark:text-white ml-8">{user.email}</p>
                     </div>
-                    <div className="bg-gray-50 rounded-xl p-4">
+                    <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
                       <div className="flex items-center gap-3 mb-2">
                         <Phone className="w-5 h-5 text-[#FF6B35]" />
-                        <p className="text-sm text-gray-500">Phone Number</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">Phone Number</p>
                       </div>
-                      <p className="font-semibold text-gray-900 ml-8">{user.phone || 'Not provided'}</p>
+                      <p className="font-semibold text-gray-900 dark:text-white ml-8">{user.phone || 'Not provided'}</p>
                     </div>
-                    <div className="bg-gray-50 rounded-xl p-4">
+                    <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
                       <div className="flex items-center gap-3 mb-2">
                         <Calendar className="w-5 h-5 text-[#FF6B35]" />
-                        <p className="text-sm text-gray-500">Member Since</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">Member Since</p>
                       </div>
-                      <p className="font-semibold text-gray-900 ml-8">
+                      <p className="font-semibold text-gray-900 dark:text-white ml-8">
                         {new Date(user.createdAt || Date.now()).toLocaleDateString('en-US', {
                           year: 'numeric',
                           month: 'long',
                         })}
                       </p>
                     </div>
-                    <div className="bg-gray-50 rounded-xl p-4 md:col-span-2">
+                    <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 md:col-span-2">
                       <div className="flex items-center gap-3 mb-2">
                         <Shield className="w-5 h-5 text-[#FF6B35]" />
-                        <p className="text-sm text-gray-500">Account Status</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">Account Status</p>
                       </div>
                       <p className="font-semibold ml-8">
                         {user.isEmailVerified ? (
-                          <span className="text-emerald-600 flex items-center gap-2">
+                          <span className="text-emerald-600 dark:text-emerald-400 flex items-center gap-2">
                             <CheckCircle className="w-4 h-4" />
                             Verified Account
                           </span>
                         ) : (
-                          <span className="text-amber-600">Pending Verification</span>
+                          <span className="text-amber-600 dark:text-amber-400">Pending Verification</span>
                         )}
                       </p>
                     </div>
@@ -240,7 +244,7 @@ export default function ProfilePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <Card className="border-0 shadow-xl rounded-2xl overflow-hidden">
+              <Card className="border-0 shadow-xl rounded-2xl overflow-hidden dark:bg-gray-900 dark:shadow-gray-900/20">
                 <div className="bg-gradient-to-r from-[#FF6B35] to-[#E55A2B] p-8">
                   <div className="flex flex-col md:flex-row items-center gap-6">
                     <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center flex-shrink-0">
@@ -271,7 +275,7 @@ export default function ProfilePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <Card className="border-0 shadow-xl rounded-2xl overflow-hidden">
+              <Card className="border-0 shadow-xl rounded-2xl overflow-hidden dark:bg-gray-900 dark:shadow-gray-900/20">
                 <div className="bg-gradient-to-r from-[#00B894] to-[#00A187] p-8">
                   <div className="flex flex-col md:flex-row items-center gap-6">
                     <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center flex-shrink-0">
@@ -301,56 +305,56 @@ export default function ProfilePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <Card className="border-0 shadow-xl rounded-2xl">
-              <CardHeader className="border-b border-gray-100">
-                <CardTitle className="text-xl flex items-center gap-2">
+            <Card className="border-0 shadow-xl rounded-2xl dark:bg-gray-900 dark:shadow-gray-900/20">
+              <CardHeader className="border-b border-gray-100 dark:border-gray-800">
+                <CardTitle className="text-xl flex items-center gap-2 text-gray-900 dark:text-white">
                   <Shield className="w-5 h-5 text-[#FF6B35]" />
                   Account Settings
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-0">
-                <div className="divide-y divide-gray-100">
-                  <Link href="/profile/change-password" className="flex items-center justify-between p-5 hover:bg-gray-50 transition-colors">
+                <div className="divide-y divide-gray-100 dark:divide-gray-800">
+                  <Link href="/profile/change-password" className="flex items-center justify-between p-5 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                     <div className="flex items-center gap-4">
                       <div className="w-12 h-12 bg-[#FF6B35]/10 rounded-xl flex items-center justify-center">
                         <Lock className="w-5 h-5 text-[#FF6B35]" />
                       </div>
                       <div>
-                        <div className="font-semibold text-gray-900">Change Password</div>
-                        <div className="text-sm text-gray-500">Update your password regularly for security</div>
+                        <div className="font-semibold text-gray-900 dark:text-white">Change Password</div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400">Update your password regularly for security</div>
                       </div>
                     </div>
                     <ChevronRight className="w-5 h-5 text-gray-400" />
                   </Link>
-                  
-                  <Link href="/profile/notifications" className="flex items-center justify-between p-5 hover:bg-gray-50 transition-colors">
+
+                  <Link href="/profile/notifications" className="flex items-center justify-between p-5 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                        <Bell className="w-5 h-5 text-blue-600" />
+                      <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/20 rounded-xl flex items-center justify-center">
+                        <Bell className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                       </div>
                       <div>
-                        <div className="font-semibold text-gray-900">Notification Preferences</div>
-                        <div className="text-sm text-gray-500">Manage email and push notifications</div>
+                        <div className="font-semibold text-gray-900 dark:text-white">Notification Preferences</div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400">Manage email and push notifications</div>
                       </div>
                     </div>
                     <ChevronRight className="w-5 h-5 text-gray-400" />
                   </Link>
-                  
-                  <button 
+
+                  <button
                     onClick={() => {
                       if (confirm('Are you sure you want to logout?')) {
                         logout();
                       }
                     }}
-                    className="w-full flex items-center justify-between p-5 hover:bg-red-50 transition-colors"
+                    className="w-full flex items-center justify-between p-5 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
-                        <LogOut className="w-5 h-5 text-red-600" />
+                      <div className="w-12 h-12 bg-red-100 dark:bg-red-900/20 rounded-xl flex items-center justify-center">
+                        <LogOut className="w-5 h-5 text-red-600 dark:text-red-400" />
                       </div>
                       <div className="text-left">
-                        <div className="font-semibold text-red-600">Logout</div>
-                        <div className="text-sm text-gray-500">Sign out from your account</div>
+                        <div className="font-semibold text-red-600 dark:text-red-400">Logout</div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400">Sign out from your account</div>
                       </div>
                     </div>
                     <ChevronRight className="w-5 h-5 text-red-400" />
@@ -361,7 +365,7 @@ export default function ProfilePage() {
           </motion.div>
         </div>
       </section>
-      
+
       <Footer />
     </div>
   );

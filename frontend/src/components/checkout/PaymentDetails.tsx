@@ -99,9 +99,9 @@ export default function PaymentDetails({ amount, onPaymentSubmit, isLoading = fa
   const isFormValid = () => {
     if (paymentMethod === 'card') {
       return paymentData.cardNumber.replace(/\s/g, '').length >= 13 &&
-             paymentData.expiryDate.length === 5 &&
-             paymentData.cvv.length >= 3 &&
-             paymentData.cardholderName.trim() !== '';
+        paymentData.expiryDate.length === 5 &&
+        paymentData.cvv.length >= 3 &&
+        paymentData.cardholderName.trim() !== '';
     }
     return true;
   };
@@ -109,7 +109,7 @@ export default function PaymentDetails({ amount, onPaymentSubmit, isLoading = fa
   return (
     <div className="bg-white rounded-lg shadow-sm border p-6">
       <h2 className="text-xl font-semibold text-gray-900 mb-6">Payment Details</h2>
-      
+
       {error && (
         <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-md flex items-center">
           <AlertCircle className="w-5 h-5 text-red-500 mr-2" />
@@ -136,8 +136,8 @@ export default function PaymentDetails({ amount, onPaymentSubmit, isLoading = fa
             onClick={() => setPaymentMethod('card')}
             className={cn(
               'p-4 border rounded-lg text-center transition-colors',
-              paymentMethod === 'card' 
-                ? 'border-blue-600 bg-blue-50 text-blue-700' 
+              paymentMethod === 'card'
+                ? 'border-blue-600 bg-blue-50 text-blue-700'
                 : 'border-gray-300 hover:bg-gray-50'
             )}
           >
@@ -149,8 +149,8 @@ export default function PaymentDetails({ amount, onPaymentSubmit, isLoading = fa
             onClick={() => setPaymentMethod('paypal')}
             className={cn(
               'p-4 border rounded-lg text-center transition-colors',
-              paymentMethod === 'paypal' 
-                ? 'border-blue-600 bg-blue-50 text-blue-700' 
+              paymentMethod === 'paypal'
+                ? 'border-blue-600 bg-blue-50 text-blue-700'
                 : 'border-gray-300 hover:bg-gray-50'
             )}
           >
@@ -161,8 +161,8 @@ export default function PaymentDetails({ amount, onPaymentSubmit, isLoading = fa
             onClick={() => setPaymentMethod('stripe')}
             className={cn(
               'p-4 border rounded-lg text-center transition-colors',
-              paymentMethod === 'stripe' 
-                ? 'border-blue-600 bg-blue-50 text-blue-700' 
+              paymentMethod === 'stripe'
+                ? 'border-blue-600 bg-blue-50 text-blue-700'
                 : 'border-gray-300 hover:bg-gray-50'
             )}
           >
@@ -176,11 +176,14 @@ export default function PaymentDetails({ amount, onPaymentSubmit, isLoading = fa
           <>
             {/* Card Details */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="cardNumber" className="block text-sm font-medium text-gray-700 mb-1 cursor-pointer">
                 Card Number *
               </label>
               <input
+                id="cardNumber"
+                name="cardNumber"
                 type="text"
+                autoComplete="cc-number"
                 value={paymentData.cardNumber}
                 onChange={(e) => handleInputChange('cardNumber', e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -192,11 +195,14 @@ export default function PaymentDetails({ amount, onPaymentSubmit, isLoading = fa
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="expiryDate" className="block text-sm font-medium text-gray-700 mb-1 cursor-pointer">
                   Expiry Date *
                 </label>
                 <input
+                  id="expiryDate"
+                  name="expiryDate"
                   type="text"
+                  autoComplete="cc-exp"
                   value={paymentData.expiryDate}
                   onChange={(e) => handleInputChange('expiryDate', e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -206,11 +212,14 @@ export default function PaymentDetails({ amount, onPaymentSubmit, isLoading = fa
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="cvv" className="block text-sm font-medium text-gray-700 mb-1 cursor-pointer">
                   CVV *
                 </label>
                 <input
+                  id="cvv"
+                  name="cvv"
                   type="text"
+                  autoComplete="cc-csc"
                   value={paymentData.cvv}
                   onChange={(e) => handleInputChange('cvv', e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -222,11 +231,14 @@ export default function PaymentDetails({ amount, onPaymentSubmit, isLoading = fa
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="cardholderName" className="block text-sm font-medium text-gray-700 mb-1 cursor-pointer">
                 Cardholder Name *
               </label>
               <input
+                id="cardholderName"
+                name="cardholderName"
                 type="text"
+                autoComplete="cc-name"
                 value={paymentData.cardholderName}
                 onChange={(e) => handleInputChange('cardholderName', e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -240,11 +252,14 @@ export default function PaymentDetails({ amount, onPaymentSubmit, isLoading = fa
               <h3 className="text-lg font-medium text-gray-900 mb-4">Billing Address</h3>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="streetAddress" className="block text-sm font-medium text-gray-700 mb-1 cursor-pointer">
                     Street Address
                   </label>
                   <input
+                    id="streetAddress"
+                    name="street"
                     type="text"
+                    autoComplete="street-address"
                     value={paymentData.billingAddress.street}
                     onChange={(e) => handleInputChange('billing.street', e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -253,11 +268,14 @@ export default function PaymentDetails({ amount, onPaymentSubmit, isLoading = fa
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="billingCity" className="block text-sm font-medium text-gray-700 mb-1 cursor-pointer">
                       City
                     </label>
                     <input
+                      id="billingCity"
+                      name="city"
                       type="text"
+                      autoComplete="address-level2"
                       value={paymentData.billingAddress.city}
                       onChange={(e) => handleInputChange('billing.city', e.target.value)}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -265,11 +283,14 @@ export default function PaymentDetails({ amount, onPaymentSubmit, isLoading = fa
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="zipCode" className="block text-sm font-medium text-gray-700 mb-1 cursor-pointer">
                       ZIP Code
                     </label>
                     <input
+                      id="zipCode"
+                      name="zipCode"
                       type="text"
+                      autoComplete="postal-code"
                       value={paymentData.billingAddress.zipCode}
                       onChange={(e) => handleInputChange('billing.zipCode', e.target.value)}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"

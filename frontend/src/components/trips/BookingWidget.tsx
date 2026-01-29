@@ -2,9 +2,9 @@
 
 import React, { useState, useMemo } from 'react';
 import { format, parseISO, differenceInDays, addDays } from 'date-fns';
-import { 
-  Calendar, Users, ChevronDown, ChevronUp, Minus, Plus, 
-  Clock, CheckCircle, Info, Loader2 
+import {
+  Calendar, Users, ChevronDown, ChevronUp, Minus, Plus,
+  Clock, CheckCircle, Info, Loader2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -38,7 +38,7 @@ export interface BookingData {
 
 export function BookingWidget({ trip, onBook, isLoading }: BookingWidgetProps) {
   const [selectedDeparture, setSelectedDeparture] = useState<Departure | null>(
-    trip.departures.find(d => d.status === 'scheduled' && d.availableSpots > 0) || null
+    trip.dates.find(d => d.status === 'scheduled' && d.availableSeats > 0) || null
   );
   const [showDepartures, setShowDepartures] = useState(false);
   const [showGuestPicker, setShowGuestPicker] = useState(false);
@@ -49,8 +49,8 @@ export function BookingWidget({ trip, onBook, isLoading }: BookingWidgetProps) {
   });
 
   const totalGuests = guests.adults + guests.children;
-  const availableDepartures = trip.departures.filter(
-    d => d.status === 'scheduled' && d.availableSpots > 0
+  const availableDepartures = trip.dates.filter(
+    d => d.status === 'scheduled' && d.availableSeats > 0
   );
 
   const pricing = useMemo(() => {
@@ -72,21 +72,21 @@ export function BookingWidget({ trip, onBook, isLoading }: BookingWidgetProps) {
   const updateGuests = (type: 'adults' | 'children' | 'infants', delta: number) => {
     setGuests((prev) => {
       const newValue = Math.max(type === 'adults' ? 1 : 0, prev[type] + delta);
-      const newTotal = 
-        (type === 'adults' ? newValue : prev.adults) + 
+      const newTotal =
+        (type === 'adults' ? newValue : prev.adults) +
         (type === 'children' ? newValue : prev.children);
-      
-      if (newTotal > (selectedDeparture?.availableSpots || trip.groupSize.max)) {
+
+      if (newTotal > (selectedDeparture?.availableSeats || trip.groupSize.max)) {
         return prev;
       }
-      
+
       return { ...prev, [type]: newValue };
     });
   };
 
   const handleBookNow = () => {
     if (!selectedDeparture) return;
-    
+
     onBook({
       departureId: selectedDeparture._id,
       departure: selectedDeparture,
@@ -140,7 +140,7 @@ export function BookingWidget({ trip, onBook, isLoading }: BookingWidgetProps) {
                       {format(parseISO(selectedDeparture.startDate), 'MMM d, yyyy')}
                     </p>
                     <p className="text-sm text-gray-500">
-                      {selectedDeparture.availableSpots} spots left
+                      {selectedDeparture.availableSeats} spots left
                     </p>
                   </>
                 ) : (
@@ -182,7 +182,7 @@ export function BookingWidget({ trip, onBook, isLoading }: BookingWidgetProps) {
                           {format(parseISO(departure.startDate), 'EEE, MMM d, yyyy')}
                         </p>
                         <p className="text-sm text-gray-500">
-                          {departure.availableSpots} spots available
+                          {departure.availableSeats} spots available
                         </p>
                       </div>
                       {departure.price && departure.price !== trip.price.amount && (
@@ -254,7 +254,7 @@ export function BookingWidget({ trip, onBook, isLoading }: BookingWidgetProps) {
                     <span className="w-8 text-center font-medium">{guests.adults}</span>
                     <button
                       onClick={() => updateGuests('adults', 1)}
-                      disabled={totalGuests >= (selectedDeparture?.availableSpots || trip.groupSize.max)}
+                      disabled={totalGuests >= (selectedDeparture?.availableSeats || trip.groupSize.max)}
                       className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:border-gray-400"
                     >
                       <Plus className="h-4 w-4" />
@@ -279,7 +279,7 @@ export function BookingWidget({ trip, onBook, isLoading }: BookingWidgetProps) {
                     <span className="w-8 text-center font-medium">{guests.children}</span>
                     <button
                       onClick={() => updateGuests('children', 1)}
-                      disabled={totalGuests >= (selectedDeparture?.availableSpots || trip.groupSize.max)}
+                      disabled={totalGuests >= (selectedDeparture?.availableSeats || trip.groupSize.max)}
                       className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:border-gray-400"
                     >
                       <Plus className="h-4 w-4" />
@@ -357,7 +357,7 @@ export function BookingWidget({ trip, onBook, isLoading }: BookingWidgetProps) {
         </div>
 
         {/* Book Now Button */}
-        <Button 
+        <Button
           onClick={handleBookNow}
           disabled={!selectedDeparture || isLoading}
           className="w-full h-12 text-base font-semibold"

@@ -1,6 +1,16 @@
 const mongoose = require('mongoose');
 const env = require('./env');
 const logger = require('../utils/logger');
+const dns = require('dns');
+
+// Use Google DNS to avoid connection issues with some ISP resolvers when using mongodb+srv
+if (process.env.NODE_ENV !== 'test') {
+  try {
+    dns.setServers(['8.8.8.8', '8.8.4.4']);
+  } catch (err) {
+    logger.warn('Failed to set custom DNS servers', { error: err.message });
+  }
+}
 
 const connectDB = async () => {
   try {
@@ -12,9 +22,9 @@ const connectDB = async () => {
     const options = {
       maxPoolSize: 10,
       minPoolSize: 5,
-      serverSelectionTimeoutMS: 5000,
-      socketTimeoutMS: 45000,
-      family: 4,
+      serverSelectionTimeoutMS: 30000, // Increased to 30s
+      socketTimeoutMS: 60000, // Increased to 60s
+      family: 4 // Force IPv4 to avoid some ENOTFOUND issues
     };
 
     const conn = await mongoose.connect(env.mongodb.uri, options);

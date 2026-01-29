@@ -129,7 +129,7 @@ export default function BlogPostPage() {
     const params = useParams();
 
     return (
-        <div className="min-h-screen bg-white">
+        <div className="min-h-screen bg-white dark:bg-gray-950 transition-colors duration-300">
             <Header />
 
             {/* Hero Image */}
@@ -146,41 +146,40 @@ export default function BlogPostPage() {
 
             <main className="max-w-4xl mx-auto px-4 -mt-32 relative z-10">
                 {/* Article Card */}
-                <article className="bg-white rounded-2xl shadow-xl overflow-hidden">
+                <article className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden mb-12 border border-gray-100 dark:border-gray-800">
                     {/* Header */}
                     <div className="p-6 md:p-10">
                         {/* Breadcrumb */}
-                        <Breadcrumb
-                            items={[
-                                { label: 'Blog', href: '/blog' },
-                                { label: blogPost.category, href: `/blog?category=${blogPost.category}` },
-                                { label: blogPost.title },
-                            ]}
-                            className="mb-6"
-                        />
+                        <div className="mb-6 flex flex-wrap items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                            <Link href="/blog" className="hover:text-[#FF6B35]">Blog</Link>
+                            <span>/</span>
+                            <Link href={`/blog?category=${blogPost.category}`} className="hover:text-[#FF6B35]">{blogPost.category}</Link>
+                            <span>/</span>
+                            <span className="text-gray-900 dark:text-gray-200 truncate max-w-[200px]">{blogPost.title}</span>
+                        </div>
 
                         {/* Category & Meta */}
-                        <Badge className="bg-[#FF6B35]/10 text-[#FF6B35] mb-4">{blogPost.category}</Badge>
+                        <Badge className="bg-[#FF6B35]/10 text-[#FF6B35] border-[#FF6B35]/20 mb-4 hover:bg-[#FF6B35]/20">{blogPost.category}</Badge>
 
-                        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">
                             {blogPost.title}
                         </h1>
 
                         {/* Author & Meta */}
-                        <div className="flex flex-wrap items-center gap-6 pb-6 border-b">
+                        <div className="flex flex-wrap items-center gap-6 pb-6 border-b border-gray-100 dark:border-gray-800">
                             <div className="flex items-center gap-3">
-                                <Avatar className="w-12 h-12">
+                                <Avatar className="w-12 h-12 border border-gray-200 dark:border-gray-700">
                                     <AvatarImage src={blogPost.author.avatar} />
                                     <AvatarFallback>{blogPost.author.name[0]}</AvatarFallback>
                                 </Avatar>
                                 <div>
-                                    <p className="font-medium text-gray-900">{blogPost.author.name}</p>
-                                    <p className="text-sm text-gray-500">
+                                    <p className="font-medium text-gray-900 dark:text-white">{blogPost.author.name}</p>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">
                                         {blogPost.author.followers.toLocaleString()} followers
                                     </p>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-4 text-sm text-gray-500">
+                            <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
                                 <span className="flex items-center gap-1">
                                     <Calendar className="w-4 h-4" />
                                     {blogPost.publishedAt}
@@ -193,22 +192,22 @@ export default function BlogPostPage() {
                         </div>
 
                         {/* Actions */}
-                        <div className="flex items-center justify-between py-4 border-b">
+                        <div className="flex items-center justify-between py-4 border-b border-gray-100 dark:border-gray-800">
                             <div className="flex items-center gap-4">
-                                <button className="flex items-center gap-2 text-gray-500 hover:text-red-500 transition-colors">
+                                <button className="flex items-center gap-2 text-gray-500 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition-colors">
                                     <Heart className="w-5 h-5" />
                                     <span>{blogPost.likes}</span>
                                 </button>
-                                <button className="flex items-center gap-2 text-gray-500 hover:text-blue-500 transition-colors">
+                                <button className="flex items-center gap-2 text-gray-500 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
                                     <MessageCircle className="w-5 h-5" />
                                     <span>{blogPost.comments}</span>
                                 </button>
                             </div>
                             <div className="flex items-center gap-2">
-                                <Button variant="ghost" size="icon">
+                                <Button variant="ghost" size="icon" className="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800">
                                     <Bookmark className="w-5 h-5" />
                                 </Button>
-                                <Button variant="ghost" size="icon">
+                                <Button variant="ghost" size="icon" className="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800">
                                     <Share2 className="w-5 h-5" />
                                 </Button>
                             </div>
@@ -216,72 +215,72 @@ export default function BlogPostPage() {
 
                         {/* Content */}
                         <div
-                            className="prose prose-lg max-w-none py-8"
+                            className="prose prose-lg dark:prose-invert max-w-none py-8"
                             dangerouslySetInnerHTML={{ __html: blogPost.content }}
                         />
 
                         {/* Tags */}
-                        <div className="flex flex-wrap gap-2 pt-6 border-t">
+                        <div className="flex flex-wrap gap-2 pt-6 border-t border-gray-100 dark:border-gray-800">
                             <Tag className="w-4 h-4 text-gray-400" />
                             {blogPost.tags.map((tag) => (
-                                <Badge key={tag} variant="secondary">
+                                <Badge key={tag} variant="secondary" className="dark:bg-gray-800 dark:text-gray-300">
                                     {tag}
                                 </Badge>
                             ))}
                         </div>
 
                         {/* Share */}
-                        <div className="flex items-center gap-4 pt-6 mt-6 border-t">
-                            <span className="text-gray-600 font-medium">Share:</span>
-                            <Button variant="outline" size="icon" className="rounded-full">
+                        <div className="flex items-center gap-4 pt-6 mt-6 border-t border-gray-100 dark:border-gray-800">
+                            <span className="text-gray-600 dark:text-gray-400 font-medium">Share:</span>
+                            <Button variant="outline" size="icon" className="rounded-full dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800">
                                 <Facebook className="w-4 h-4" />
                             </Button>
-                            <Button variant="outline" size="icon" className="rounded-full">
+                            <Button variant="outline" size="icon" className="rounded-full dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800">
                                 <Twitter className="w-4 h-4" />
                             </Button>
-                            <Button variant="outline" size="icon" className="rounded-full">
+                            <Button variant="outline" size="icon" className="rounded-full dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800">
                                 <Linkedin className="w-4 h-4" />
                             </Button>
-                            <Button variant="outline" size="icon" className="rounded-full">
+                            <Button variant="outline" size="icon" className="rounded-full dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800">
                                 <Link2 className="w-4 h-4" />
                             </Button>
                         </div>
                     </div>
 
                     {/* Author Bio */}
-                    <div className="bg-gray-50 p-6 md:p-10">
-                        <h3 className="font-bold text-gray-900 mb-4">About the Author</h3>
+                    <div className="bg-gray-50 dark:bg-gray-800/50 p-6 md:p-10 border-t border-gray-100 dark:border-gray-800">
+                        <h3 className="font-bold text-gray-900 dark:text-white mb-4">About the Author</h3>
                         <div className="flex items-start gap-4">
-                            <Avatar className="w-16 h-16">
+                            <Avatar className="w-16 h-16 border border-gray-200 dark:border-gray-700">
                                 <AvatarImage src={blogPost.author.avatar} />
                                 <AvatarFallback>{blogPost.author.name[0]}</AvatarFallback>
                             </Avatar>
                             <div className="flex-1">
-                                <h4 className="font-semibold text-gray-900">{blogPost.author.name}</h4>
-                                <p className="text-gray-600 text-sm mb-3">{blogPost.author.bio}</p>
-                                <Button size="sm">Follow</Button>
+                                <h4 className="font-semibold text-gray-900 dark:text-white">{blogPost.author.name}</h4>
+                                <p className="text-gray-600 dark:text-gray-400 text-sm mb-3">{blogPost.author.bio}</p>
+                                <Button size="sm" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700">Follow</Button>
                             </div>
                         </div>
                     </div>
 
                     {/* Comments Section */}
-                    <div className="p-6 md:p-10 border-t">
-                        <h3 className="font-bold text-gray-900 mb-6">
+                    <div className="p-6 md:p-10 border-t border-gray-100 dark:border-gray-800">
+                        <h3 className="font-bold text-gray-900 dark:text-white mb-6">
                             Comments ({blogPost.comments})
                         </h3>
 
                         <div className="mb-6">
                             <Textarea
                                 placeholder="Write a comment..."
-                                className="mb-3"
+                                className="mb-3 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:placeholder:text-gray-400"
                                 rows={3}
                             />
-                            <Button className="bg-[#FF6B35] hover:bg-[#E55A2B]">
+                            <Button className="bg-[#FF6B35] hover:bg-[#E55A2B] text-white">
                                 Post Comment
                             </Button>
                         </div>
 
-                        <p className="text-gray-500 text-center py-8">
+                        <p className="text-gray-500 dark:text-gray-500 text-center py-8">
                             Sign in to view and post comments
                         </p>
                     </div>
@@ -289,11 +288,11 @@ export default function BlogPostPage() {
 
                 {/* Related Posts */}
                 <section className="py-12">
-                    <h2 className="text-2xl font-bold text-gray-900 mb-8">Related Articles</h2>
+                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-8">Related Articles</h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         {relatedPosts.map((post) => (
                             <Link key={post.id} href={`/blog/${post.slug}`}>
-                                <Card className="overflow-hidden hover:shadow-lg transition-shadow group h-full">
+                                <Card className="overflow-hidden hover:shadow-lg transition-shadow group h-full dark:bg-gray-900 dark:border-gray-800">
                                     <div className="relative h-40">
                                         <Image
                                             src={post.image}
@@ -301,15 +300,15 @@ export default function BlogPostPage() {
                                             fill
                                             className="object-cover group-hover:scale-105 transition-transform duration-300"
                                         />
-                                        <Badge className="absolute top-3 left-3 bg-white/90 text-gray-800">
+                                        <Badge className="absolute top-3 left-3 bg-white/90 dark:bg-gray-900/90 text-gray-800 dark:text-white">
                                             {post.category}
                                         </Badge>
                                     </div>
                                     <CardContent className="p-4">
-                                        <h3 className="font-semibold text-gray-900 line-clamp-2 group-hover:text-[#FF6B35] transition-colors">
+                                        <h3 className="font-semibold text-gray-900 dark:text-white line-clamp-2 group-hover:text-[#FF6B35] transition-colors">
                                             {post.title}
                                         </h3>
-                                        <div className="flex items-center gap-1 text-sm text-gray-500 mt-2">
+                                        <div className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400 mt-2">
                                             <Clock className="w-3 h-3" />
                                             {post.readTime} min read
                                         </div>
@@ -323,7 +322,7 @@ export default function BlogPostPage() {
                 {/* Back to Blog */}
                 <div className="text-center pb-12">
                     <Link href="/blog">
-                        <Button variant="outline" size="lg">
+                        <Button variant="outline" size="lg" className="dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800">
                             <ChevronLeft className="w-4 h-4 mr-2" />
                             Back to Blog
                         </Button>
@@ -340,27 +339,45 @@ export default function BlogPostPage() {
           color: #4b5563;
           line-height: 1.75;
         }
+        .dark .prose p.lead {
+          color: #9ca3af;
+        }
         .prose h2 {
           color: #1f2937;
           font-weight: 700;
           margin-top: 2rem;
           margin-bottom: 1rem;
         }
+        .dark .prose h2 {
+          color: #f3f4f6;
+        }
         .prose p {
           color: #4b5563;
           line-height: 1.75;
           margin-bottom: 1rem;
         }
+        .dark .prose p {
+          color: #9ca3af;
+        }
         .prose ul {
           margin-left: 1.5rem;
           list-style-type: disc;
+        }
+        .dark .prose ul {
+          color: #9ca3af;
         }
         .prose li {
           color: #4b5563;
           margin-bottom: 0.5rem;
         }
+        .dark .prose li {
+         color: #9ca3af;
+        }
         .prose strong {
           color: #1f2937;
+        }
+        .dark .prose strong {
+          color: #f3f4f6;
         }
       `}</style>
         </div>

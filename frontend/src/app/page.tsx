@@ -7,12 +7,15 @@ import { DestinationGrid } from '@/components/home/DestinationGrid';
 import { FeaturedTrips } from '@/components/home/FeaturedTrips';
 import { TestimonialsSection } from '@/components/home/TestimonialsSection';
 import { WhyChooseUs } from '@/components/home/WhyChooseUs';
-import { NewsletterSection } from '@/components/home/NewsletterSection';
 import { LastMinuteDeals } from '@/components/home/LastMinuteDeals';
 import { CommunitySection } from '@/components/community/CommunitySection';
 import { Footer } from '@/components/layout/Footer';
 import { Trip } from '@/types';
 import { tripApi } from '@/lib/api/trips';
+import { BudgetFriendlySection } from '@/components/home/BudgetFriendlySection';
+import { WeekendEscapesSection } from '@/components/home/WeekendEscapesSection';
+import { TrendingDestinations } from '@/components/home/TrendingDestinations';
+import { WinterWanderlistSection } from '@/components/home/WinterWanderlistSection';
 
 // Sample featured trips data (in production, this would come from API)
 const sampleTrips: Trip[] = [
@@ -37,9 +40,9 @@ const sampleTrips: Trip[] = [
       discountedAmount: 9999,
       discountPercentage: 23,
     },
-    images: [{ url: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=600&q=80', isPrimary: true }],
+    images: [{ url: 'https://images.unsplash.com/photo-1590603784837-de409fd71ba9?w=800&q=80', isPrimary: true }],
     tripType: 'fixed_date',
-    departures: [],
+    dates: [],
     itinerary: [],
     inclusions: ['Meals', 'Accommodation', 'Guide'],
     exclusions: ['Personal expenses'],
@@ -55,7 +58,7 @@ const sampleTrips: Trip[] = [
     rating: { average: 4.8, count: 124 },
     status: 'published',
     isFeatured: true,
-    stats: { views: 1250, bookings: 48, wishlistAdds: 156 },
+    stats: { views: 1250, bookings: 48, wishlistAdds: 156, rating: 4.8, reviewCount: 124, bookingsCount: 48 },
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   },
@@ -79,9 +82,9 @@ const sampleTrips: Trip[] = [
       priceType: 'per_person',
       discountedAmount: 7499,
     },
-    images: [{ url: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=600&q=80', isPrimary: true }],
+    images: [{ url: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=800&q=80', isPrimary: true }],
     tripType: 'flexible',
-    departures: [],
+    dates: [],
     itinerary: [],
     inclusions: ['Resort stay', 'Breakfast', 'Transfers'],
     exclusions: ['Flights'],
@@ -97,7 +100,7 @@ const sampleTrips: Trip[] = [
     rating: { average: 4.6, count: 89 },
     status: 'published',
     isFeatured: true,
-    stats: { views: 980, bookings: 35, wishlistAdds: 112 },
+    stats: { views: 980, bookings: 35, wishlistAdds: 112, rating: 4.6, reviewCount: 89, bookingsCount: 35 },
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   },
@@ -121,9 +124,9 @@ const sampleTrips: Trip[] = [
       priceType: 'per_person',
       discountedAmount: 13999,
     },
-    images: [{ url: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=600&q=80', isPrimary: true }],
+    images: [{ url: 'https://images.unsplash.com/photo-1593181629936-11c609b8db9b?w=800&q=80', isPrimary: true }],
     tripType: 'flexible',
-    departures: [],
+    dates: [],
     itinerary: [],
     inclusions: ['Houseboat', 'All meals', 'Village tour'],
     exclusions: ['Travel to Kerala'],
@@ -139,7 +142,7 @@ const sampleTrips: Trip[] = [
     rating: { average: 4.9, count: 156 },
     status: 'published',
     isFeatured: true,
-    stats: { views: 1540, bookings: 62, wishlistAdds: 203 },
+    stats: { views: 1540, bookings: 62, wishlistAdds: 203, rating: 4.9, reviewCount: 156, bookingsCount: 62 },
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   },
@@ -163,9 +166,9 @@ const sampleTrips: Trip[] = [
       priceType: 'per_person',
       discountedAmount: 29999,
     },
-    images: [{ url: 'https://images.unsplash.com/photo-1506038634487-60a69ae4b7b1?w=600&q=80', isPrimary: true }],
+    images: [{ url: 'https://images.unsplash.com/photo-1506038634487-60a69ae4b7b1?w=800&q=80', isPrimary: true }],
     tripType: 'fixed_date',
-    departures: [],
+    dates: [],
     itinerary: [],
     inclusions: ['Bike rental', 'Fuel', 'Accommodation', 'Mechanic support'],
     exclusions: ['Personal gear'],
@@ -181,7 +184,7 @@ const sampleTrips: Trip[] = [
     rating: { average: 4.7, count: 78 },
     status: 'published',
     isFeatured: true,
-    stats: { views: 850, bookings: 28, wishlistAdds: 94 },
+    stats: { views: 850, bookings: 28, wishlistAdds: 94, rating: 4.7, reviewCount: 78, bookingsCount: 28 },
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   },
@@ -205,9 +208,9 @@ const sampleTrips: Trip[] = [
       priceType: 'per_person',
       discountedAmount: 14999,
     },
-    images: [{ url: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80', isPrimary: true }],
+    images: [{ url: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800&q=80', isPrimary: true }],
     tripType: 'fixed_date',
-    departures: [],
+    dates: [],
     itinerary: [],
     inclusions: ['Ashram stay', 'Vegetarian meals', 'Yoga sessions'],
     exclusions: ['Personal expenses'],
@@ -223,7 +226,7 @@ const sampleTrips: Trip[] = [
     rating: { average: 4.8, count: 203 },
     status: 'published',
     isFeatured: true,
-    stats: { views: 1680, bookings: 71, wishlistAdds: 245 },
+    stats: { views: 1680, bookings: 71, wishlistAdds: 245, rating: 4.8, reviewCount: 203, bookingsCount: 71 },
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   },
@@ -247,9 +250,9 @@ const sampleTrips: Trip[] = [
       priceType: 'per_person',
       discountedAmount: 8999,
     },
-    images: [{ url: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=600&q=80', isPrimary: true }],
+    images: [{ url: 'https://images.unsplash.com/photo-1548013146-72479768bada?w=800&q=80', isPrimary: true }],
     tripType: 'flexible',
-    departures: [],
+    dates: [],
     itinerary: [],
     inclusions: ['Desert camp', 'Camel safari', 'Meals', 'Folk music'],
     exclusions: ['Travel to Jaisalmer'],
@@ -265,7 +268,7 @@ const sampleTrips: Trip[] = [
     rating: { average: 4.6, count: 145 },
     status: 'published',
     isFeatured: true,
-    stats: { views: 920, bookings: 42, wishlistAdds: 167 },
+    stats: { views: 920, bookings: 42, wishlistAdds: 167, rating: 4.6, reviewCount: 145, bookingsCount: 42 },
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   },
@@ -289,28 +292,32 @@ export default function HomePage() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-white dark:bg-gray-950 transition-colors duration-300">
       {/* Hero Section - Enhanced with Video Background */}
       <HeroSection />
-
-      {/* Last Minute Deals - New! */}
-      <LastMinuteDeals />
 
       {/* Category Section - Browse by Trip Type */}
       <CategorySection />
 
-      {/* Featured Trips - Horizontal Scrollable Carousel */}
-      <FeaturedTrips
-        trips={featuredTrips}
-        title="Trending This Season"
-        subtitle="Most booked experiences by travelers"
-        viewAllLink="/trips?sort=popular"
-      />
+      {/* Budget Friendly - Zostel Stays (NEW) */}
+      <BudgetFriendlySection />
 
-      {/* Destination Grid - Popular Destinations with Images */}
+      {/* Weekend Escapes - Nearby Getaways (NEW) */}
+      <WeekendEscapesSection />
+
+      {/* Trending Destinations - Top locations (NEW) */}
+      <TrendingDestinations />
+
+      {/* Winter Wanderlist - Seasonal Specials (NEW) */}
+      <WinterWanderlistSection />
+
+      {/* Destination Grid - All Destinations with Filters (UPDATED) */}
       <DestinationGrid />
 
-      {/* Community Section - New! */}
+      {/* Last Minute Deals */}
+      <LastMinuteDeals />
+
+      {/* Community Section */}
       <CommunitySection />
 
       {/* Testimonials - Social Proof */}
@@ -318,9 +325,6 @@ export default function HomePage() {
 
       {/* Why Choose Us - Trust Building Section */}
       <WhyChooseUs />
-
-      {/* Newsletter - Email Capture */}
-      <NewsletterSection />
 
       {/* JSON-LD Structured Data */}
       <script

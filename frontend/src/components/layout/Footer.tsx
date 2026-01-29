@@ -81,10 +81,12 @@ export function Footer() {
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full md:w-80 bg-white/10 border-white/20 text-white placeholder:text-white/60"
                 required
+                suppressHydrationWarning
               />
               <Button
                 type="submit"
                 className="bg-gray-900 hover:bg-gray-800 text-white shrink-0"
+                suppressHydrationWarning
               >
                 Subscribe
                 <ArrowRight className="ml-2 h-4 w-4" />

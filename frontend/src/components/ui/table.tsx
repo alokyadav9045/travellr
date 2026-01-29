@@ -7,10 +7,17 @@ interface TableProps {
 
 interface TableHeaderProps {
   children: React.ReactNode;
+  className?: string;
+}
+
+interface TableHeadProps {
+  children: React.ReactNode;
+  className?: string;
 }
 
 interface TableBodyProps {
   children: React.ReactNode;
+  className?: string;
 }
 
 interface TableRowProps {
@@ -21,47 +28,42 @@ interface TableRowProps {
 interface TableCellProps {
   children: React.ReactNode;
   className?: string;
-  header?: boolean;
 }
 
 export const Table = ({ children, className = '' }: TableProps) => (
-  <div className="overflow-x-auto">
-    <table className={`w-full border-collapse ${className}`}>
+  <div className="w-full overflow-auto">
+    <table className={`w-full caption-bottom text-sm ${className}`}>
       {children}
     </table>
   </div>
 );
 
-export const TableHeader = ({ children }: TableHeaderProps) => (
-  <thead className="bg-gray-100 border-b-2 border-gray-300">
+export const TableHeader = ({ children, className = '' }: TableHeaderProps) => (
+  <thead className={`[&_tr]:border-b ${className}`}>
     {children}
   </thead>
 );
 
-// Alias for compatibility
-export const TableHead = TableHeader;
+export const TableBody = ({ children, className = '' }: TableBodyProps) => (
+  <tbody className={`[&_tr:last-child]:border-0 ${className}`}>
+    {children}
+  </tbody>
+);
 
-export const TableBody = ({ children }: TableBodyProps) => (
-  <tbody>{children}</tbody>
+export const TableHead = ({ children, className = '' }: TableHeadProps) => (
+  <th className={`h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 ${className}`}>
+    {children}
+  </th>
 );
 
 export const TableRow = ({ children, className = '' }: TableRowProps) => (
-  <tr className={`border-b border-gray-200 hover:bg-gray-50 ${className}`}>
+  <tr className={`border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted ${className}`}>
     {children}
   </tr>
 );
 
-export const TableCell = ({
-  children,
-  className = '',
-  header = false
-}: TableCellProps) =>
-  header ? (
-    <th className={`px-4 py-3 text-left text-sm font-semibold text-gray-900 ${className}`}>
-      {children}
-    </th>
-  ) : (
-    <td className={`px-4 py-3 text-sm text-gray-700 ${className}`}>
-      {children}
-    </td>
-  );
+export const TableCell = ({ children, className = '' }: TableCellProps) => (
+  <td className={`p-4 align-middle [&:has([role=checkbox])]:pr-0 ${className}`}>
+    {children}
+  </td>
+);

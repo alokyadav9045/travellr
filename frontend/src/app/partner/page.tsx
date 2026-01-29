@@ -159,11 +159,11 @@ export default function PartnerPage() {
     };
 
     return (
-        <div className="min-h-screen bg-white">
+        <div className="min-h-screen bg-white dark:bg-gray-950 transition-colors duration-300">
             <Header />
 
             {/* Hero Section */}
-            <section className="relative min-h-[60vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#2D3436] via-[#636E72] to-[#2D3436] pt-20">
+            <section className="relative min-h-[60vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#2D3436] via-[#636E72] to-[#2D3436] dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 pt-20">
                 <div className="absolute inset-0">
                     <div className="absolute top-20 left-10 w-72 h-72 bg-[#FF6B35]/30 rounded-full blur-3xl" />
                     <div className="absolute bottom-10 right-10 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl" />
@@ -201,7 +201,7 @@ export default function PartnerPage() {
             </section>
 
             {/* Metrics */}
-            <section className="py-12 bg-white border-b">
+            <section className="py-12 bg-white dark:bg-gray-950 border-b dark:border-gray-800">
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                         {metrics.map((metric, index) => (
@@ -214,7 +214,7 @@ export default function PartnerPage() {
                                 className="text-center"
                             >
                                 <div className="text-3xl md:text-4xl font-bold text-[#FF6B35] mb-1">{metric.value}</div>
-                                <div className="text-gray-600">{metric.label}</div>
+                                <div className="text-gray-600 dark:text-gray-400">{metric.label}</div>
                             </motion.div>
                         ))}
                     </div>
@@ -222,14 +222,14 @@ export default function PartnerPage() {
             </section>
 
             {/* Partnership Types */}
-            <section className="py-20 bg-gray-50">
+            <section className="py-20 bg-gray-50 dark:bg-gray-900">
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="text-center mb-12">
                         <motion.h2
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            className="text-3xl md:text-4xl font-bold text-gray-900 mb-4"
+                            className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4"
                         >
                             Choose Your Partnership Model
                         </motion.h2>
@@ -238,7 +238,7 @@ export default function PartnerPage() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.1 }}
-                            className="text-gray-600 max-w-2xl mx-auto"
+                            className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto"
                         >
                             Multiple ways to partner with us and grow together
                         </motion.p>
@@ -254,7 +254,7 @@ export default function PartnerPage() {
                                 transition={{ delay: index * 0.1 }}
                             >
                                 <Card
-                                    className={`h-full cursor-pointer transition-all hover:shadow-xl ${selectedType === type.id ? 'ring-2 ring-[#FF6B35]' : ''
+                                    className={`h-full cursor-pointer transition-all hover:shadow-xl dark:bg-gray-800 dark:border-gray-700 ${selectedType === type.id ? 'ring-2 ring-[#FF6B35]' : ''
                                         }`}
                                     onClick={() => setSelectedType(type.id)}
                                 >
@@ -262,11 +262,11 @@ export default function PartnerPage() {
                                         <div className={`w-14 h-14 rounded-2xl bg-gradient-to-r ${type.color} flex items-center justify-center mb-4`}>
                                             <type.icon className="w-7 h-7 text-white" />
                                         </div>
-                                        <h3 className="text-xl font-bold text-gray-900 mb-2">{type.title}</h3>
-                                        <p className="text-gray-600 text-sm mb-4">{type.description}</p>
+                                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{type.title}</h3>
+                                        <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">{type.description}</p>
                                         <ul className="space-y-2">
                                             {type.benefits.map((benefit, i) => (
-                                                <li key={i} className="flex items-center gap-2 text-sm text-gray-600">
+                                                <li key={i} className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                                                     <Check className="w-4 h-4 text-green-500 flex-shrink-0" />
                                                     {benefit}
                                                 </li>
@@ -281,10 +281,10 @@ export default function PartnerPage() {
             </section>
 
             {/* Testimonials */}
-            <section className="py-20 bg-white">
+            <section className="py-20 bg-white dark:bg-gray-950">
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="text-center mb-12">
-                        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
                             What Our Partners Say
                         </h2>
                     </div>
@@ -298,16 +298,16 @@ export default function PartnerPage() {
                                 viewport={{ once: true }}
                                 transition={{ delay: index * 0.1 }}
                             >
-                                <Card className="h-full">
+                                <Card className="h-full dark:bg-gray-900 dark:border-gray-800">
                                     <CardContent className="p-6">
                                         <div className="flex items-center gap-1 mb-4">
                                             {Array(testimonial.rating).fill(0).map((_, i) => (
                                                 <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                                             ))}
                                         </div>
-                                        <p className="text-gray-600 italic mb-6">"{testimonial.quote}"</p>
+                                        <p className="text-gray-600 dark:text-gray-400 italic mb-6">"{testimonial.quote}"</p>
                                         <div className="flex items-center gap-3">
-                                            <div className="relative w-12 h-12 rounded-full overflow-hidden">
+                                            <div className="relative w-12 h-12 rounded-full overflow-hidden border border-gray-100 dark:border-gray-800">
                                                 <Image
                                                     src={testimonial.image}
                                                     alt={testimonial.name}
@@ -316,8 +316,8 @@ export default function PartnerPage() {
                                                 />
                                             </div>
                                             <div>
-                                                <p className="font-semibold text-gray-900">{testimonial.name}</p>
-                                                <p className="text-sm text-gray-500">{testimonial.role}</p>
+                                                <p className="font-semibold text-gray-900 dark:text-white">{testimonial.name}</p>
+                                                <p className="text-sm text-gray-500 dark:text-gray-500">{testimonial.role}</p>
                                             </div>
                                         </div>
                                     </CardContent>
@@ -329,23 +329,23 @@ export default function PartnerPage() {
             </section>
 
             {/* Contact Form */}
-            <section className="py-20 bg-gray-50">
+            <section className="py-20 bg-gray-50 dark:bg-gray-900">
                 <div className="max-w-4xl mx-auto px-4">
                     <div className="text-center mb-12">
-                        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
                             Get Started Today
                         </h2>
-                        <p className="text-gray-600">
+                        <p className="text-gray-600 dark:text-gray-400">
                             Fill out the form below and our partnership team will reach out within 24 hours
                         </p>
                     </div>
 
-                    <Card>
+                    <Card className="dark:bg-gray-800 dark:border-gray-700">
                         <CardContent className="p-8">
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                             Full Name *
                                         </label>
                                         <Input
@@ -353,10 +353,11 @@ export default function PartnerPage() {
                                             value={formData.name}
                                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                             placeholder="Enter your name"
+                                            className="dark:bg-gray-900 dark:border-gray-700 dark:text-white dark:placeholder:text-gray-500"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                             Email Address *
                                         </label>
                                         <Input
@@ -365,10 +366,11 @@ export default function PartnerPage() {
                                             value={formData.email}
                                             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                             placeholder="your@email.com"
+                                            className="dark:bg-gray-900 dark:border-gray-700 dark:text-white dark:placeholder:text-gray-500"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                             Phone Number *
                                         </label>
                                         <Input
@@ -377,40 +379,43 @@ export default function PartnerPage() {
                                             value={formData.phone}
                                             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                                             placeholder="+91 98765 43210"
+                                            className="dark:bg-gray-900 dark:border-gray-700 dark:text-white dark:placeholder:text-gray-500"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                             Company/Business Name
                                         </label>
                                         <Input
                                             value={formData.company}
                                             onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                                             placeholder="Your company name"
+                                            className="dark:bg-gray-900 dark:border-gray-700 dark:text-white dark:placeholder:text-gray-500"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                             Location
                                         </label>
                                         <Input
                                             value={formData.location}
                                             onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                                             placeholder="City, State"
+                                            className="dark:bg-gray-900 dark:border-gray-700 dark:text-white dark:placeholder:text-gray-500"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                             Partnership Type *
                                         </label>
                                         <Select
                                             value={formData.partnerType}
                                             onValueChange={(value) => setFormData({ ...formData, partnerType: value })}
                                         >
-                                            <SelectTrigger>
+                                            <SelectTrigger className="dark:bg-gray-900 dark:border-gray-700 dark:text-white">
                                                 <SelectValue placeholder="Select partnership type" />
                                             </SelectTrigger>
-                                            <SelectContent>
+                                            <SelectContent className="dark:bg-gray-900 dark:border-gray-700 dark:text-white">
                                                 <SelectItem value="franchise">Franchise Partner</SelectItem>
                                                 <SelectItem value="agency">Travel Agency</SelectItem>
                                                 <SelectItem value="creator">Content Creator</SelectItem>
@@ -421,7 +426,7 @@ export default function PartnerPage() {
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                         Tell us about your interest
                                     </label>
                                     <Textarea
@@ -429,6 +434,7 @@ export default function PartnerPage() {
                                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                                         placeholder="Share more about your business and why you want to partner with us..."
                                         rows={4}
+                                        className="dark:bg-gray-900 dark:border-gray-700 dark:text-white dark:placeholder:text-gray-500"
                                     />
                                 </div>
                                 <Button
@@ -456,22 +462,22 @@ export default function PartnerPage() {
                             <div className="w-12 h-12 bg-[#FF6B35]/10 rounded-full flex items-center justify-center mb-3">
                                 <Mail className="w-6 h-6 text-[#FF6B35]" />
                             </div>
-                            <h4 className="font-semibold text-gray-900">Email Us</h4>
-                            <p className="text-gray-600">partners@travellr.com</p>
+                            <h4 className="font-semibold text-gray-900 dark:text-white">Email Us</h4>
+                            <p className="text-gray-600 dark:text-gray-400">partners@travellr.com</p>
                         </div>
                         <div className="flex flex-col items-center">
                             <div className="w-12 h-12 bg-[#FF6B35]/10 rounded-full flex items-center justify-center mb-3">
                                 <Phone className="w-6 h-6 text-[#FF6B35]" />
                             </div>
-                            <h4 className="font-semibold text-gray-900">Call Us</h4>
-                            <p className="text-gray-600">+91 1800 123 4567</p>
+                            <h4 className="font-semibold text-gray-900 dark:text-white">Call Us</h4>
+                            <p className="text-gray-600 dark:text-gray-400">+91 1800 123 4567</p>
                         </div>
                         <div className="flex flex-col items-center">
                             <div className="w-12 h-12 bg-[#FF6B35]/10 rounded-full flex items-center justify-center mb-3">
                                 <MapPin className="w-6 h-6 text-[#FF6B35]" />
                             </div>
-                            <h4 className="font-semibold text-gray-900">Visit Us</h4>
-                            <p className="text-gray-600">Delhi, Mumbai, Bangalore</p>
+                            <h4 className="font-semibold text-gray-900 dark:text-white">Visit Us</h4>
+                            <p className="text-gray-600 dark:text-gray-400">Delhi, Mumbai, Bangalore</p>
                         </div>
                     </div>
                 </div>

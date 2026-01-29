@@ -1,13 +1,14 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSelector, useDispatch } from 'react-redux';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { motion } from 'framer-motion';
 import { RootState, AppDispatch } from '@/store';
-import { setStep, clearCart } from '@/store/slices/cartSlice';
+import { setStep, clearCart, nextStep, updateTripDetails, updateLeadGuest, setProcessing, setError, setClientSecret } from '@/store/slices/cartSlice';
+import { bookingApi } from '@/lib/api/bookings';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import CheckoutSteps from '@/components/checkout/CheckoutSteps';
@@ -24,7 +25,8 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
 export default function CheckoutPage() {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
-  const { item, step, clientSecret } = useSelector((state: RootState) => state.cart);
+  const { item, step, clientSecret, isProcessing, error } = useSelector((state: RootState) => state.cart);
+  const [bookingId, setBookingId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!item) {
@@ -32,12 +34,38 @@ export default function CheckoutPage() {
     }
   }, [item, router]);
 
+  // Recalculate price when dependencies change
+  useEffect(() => {
+    if (item && step === 1) {
+      const fetchRealPrice = async () => {
+        try {
+          const pricing = await bookingApi.calculatePrice({
+            tripId: item.trip.id,
+            departureId: '', // Should be from trip data if available
+            guests: {
+              adults: item.numberOfGuests,
+              children: 0,
+              infants: 0
+            }
+          });
+          // Update Redux pricing if needed (optional since we show it in OrderSummary)
+          console.log('Real-time pricing:', pricing);
+        } catch (err) {
+          console.error('Failed to calculate real-time price', err);
+        }
+      };
+      fetchRealPrice();
+    }
+  }, [item?.numberOfGuests, item?.selectedDate, step]);
+
   if (!item) {
     return null;
   }
 
   const handleStepChange = (newStep: number) => {
-    dispatch(setStep(newStep));
+    if (newStep < step) {
+      dispatch(setStep(newStep));
+    }
   };
 
   const handleBack = () => {
@@ -53,24 +81,131 @@ export default function CheckoutPage() {
     router.push('/trips');
   };
 
+  const handleContinueToPayment = async () => {
+    try {
+      dispatch(setProcessing(true));
+
+      // Find matching departure ID if possible
+      const departure = item.trip.dates.find(d =>
+        new Date(d.startDate).toDateString() === new Date(item.selectedDate).toDateString()
+      );
+
+      // Create actual booking record in backend
+      const bookingData = {
+        tripId: item.trip.id || item.trip._id,
+        departureId: departure?._id || '',
+        guests: {
+          adults: item.numberOfGuests,
+          children: 0,
+          infants: 0
+        },
+        leadGuest: {
+          firstName: item.guestDetails.leadGuest.firstName,
+          lastName: item.guestDetails.leadGuest.lastName,
+          email: item.guestDetails.leadGuest.email,
+          phone: item.guestDetails.leadGuest.phone
+        },
+        specialRequests: item.specialRequests
+      };
+
+      const response = await bookingApi.createBooking(bookingData as any);
+
+      if (response._id || response.id) {
+        setBookingId(response._id || response.id);
+        if ((response as any).clientSecret) {
+          dispatch(setClientSecret((response as any).clientSecret));
+        }
+        dispatch(nextStep());
+      }
+    } catch (err: any) {
+      dispatch(setError(err.response?.data?.message || 'Failed to initiate booking'));
+    } finally {
+      dispatch(setProcessing(false));
+    }
+  };
+
+  const handlePaymentSubmit = async (paymentData: any) => {
+    try {
+      dispatch(setProcessing(true));
+
+      // If we have a booking ID, confirm payment
+      if (bookingId) {
+        // If it was a manual card form (not Stripe Elements)
+        // In a real app with Stripe Elements, we'd use stripe.confirmPayment
+        // For this demo, we'll notify backend of payment status
+        await bookingApi.updateBooking(bookingId, {
+          status: 'confirmed',
+          // paymentMetadata: paymentData 
+        });
+
+        dispatch(setStep(4));
+      }
+    } catch (error: any) {
+      dispatch(setError(error.message));
+    } finally {
+      dispatch(setProcessing(false));
+    }
+  };
+
   const renderStepContent = () => {
     switch (step) {
       case 1:
-        return <TripDetails trip={item.trip} selectedDate={item.selectedDate?.toISOString() || ''} guestCount={item.numberOfGuests} />;
+        return (
+          <>
+            <TripDetails trip={item.trip} selectedDate={item.selectedDate?.toISOString() || ''} guestCount={item.numberOfGuests} />
+            <div className="mt-6 flex justify-end">
+              <Button onClick={() => dispatch(nextStep())} className="px-8 bg-[#FF6B35] hover:bg-[#E55A2B]">
+                Continue to Guest Details
+              </Button>
+            </div>
+          </>
+        );
       case 2:
-        return <GuestDetails guestCount={item.numberOfGuests} onGuestCountChange={() => {}} leadGuestDetails={item.guestDetails?.leadGuest} onLeadGuestChange={() => {}} />;
+        return (
+          <>
+            <GuestDetails
+              guestCount={item.numberOfGuests}
+              onGuestCountChange={(count) => dispatch(updateTripDetails({
+                selectedDate: item.selectedDate,
+                numberOfGuests: count
+              }))}
+              leadGuestDetails={item.guestDetails?.leadGuest}
+              onLeadGuestChange={(details) => dispatch(updateLeadGuest(details))}
+            />
+            {error && <p className="text-red-500 text-sm mt-4">{error}</p>}
+            <div className="mt-6 flex justify-end">
+              <Button
+                onClick={handleContinueToPayment}
+                disabled={!item.guestDetails?.leadGuest?.firstName || !item.guestDetails?.leadGuest?.email || isProcessing}
+                className="px-8 bg-[#FF6B35] hover:bg-[#E55A2B]"
+              >
+                {isProcessing ? 'Processing...' : 'Continue to Payment'}
+              </Button>
+            </div>
+          </>
+        );
       case 3:
         return clientSecret ? (
           <Elements stripe={stripePromise} options={{ clientSecret }}>
-            <PaymentDetails amount={item.trip.price.amount * item.numberOfGuests} onPaymentSubmit={() => {}} />
+            <PaymentDetails
+              amount={item.pricing.totalPrice}
+              onPaymentSubmit={handlePaymentSubmit}
+              isLoading={isProcessing}
+              error={error || undefined}
+            />
           </Elements>
         ) : (
-          <PaymentDetails amount={item.trip.price.amount * item.numberOfGuests} onPaymentSubmit={() => {}} />
+          <PaymentDetails
+            amount={item.pricing.totalPrice}
+            onPaymentSubmit={handlePaymentSubmit}
+            isLoading={isProcessing}
+            error={error || undefined}
+          />
         );
       case 4:
-        return <CheckoutSuccess bookingId="BK123" trip={item.trip} guestCount={item.numberOfGuests} totalAmount={item.trip.price.amount * item.numberOfGuests} guestDetails={item.guestDetails?.leadGuest} onBackToHome={() => router.push('/trips')} />;
+        return <CheckoutSuccess bookingId={bookingId || 'TRV-SUCCESS'} trip={item.trip} guestCount={item.numberOfGuests} totalAmount={item.pricing.totalPrice} guestDetails={item.guestDetails?.leadGuest} onBackToHome={() => router.push('/')} />;
       default:
-        return <TripDetails trip={item.trip} selectedDate={item.selectedDate?.toISOString() || ''} guestCount={item.numberOfGuests} />;
+        return null;
     }
   };
 
@@ -81,7 +216,7 @@ export default function CheckoutPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      
+
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-[#2D3436] via-[#636E72] to-[#2D3436] pt-32 pb-12">
         {/* Decorative Elements */}
@@ -89,7 +224,7 @@ export default function CheckoutPage() {
           <div className="absolute top-20 left-10 w-72 h-72 bg-[#FF6B35]/20 rounded-full blur-3xl" />
           <div className="absolute bottom-10 right-10 w-96 h-96 bg-[#00B894]/10 rounded-full blur-3xl" />
         </div>
-        
+
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -124,7 +259,7 @@ export default function CheckoutPage() {
               Cancel Booking
             </Button>
           </motion.div>
-          
+
           {/* Trust Badges */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -162,7 +297,7 @@ export default function CheckoutPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
-          <motion.div 
+          <motion.div
             className="lg:col-span-2"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -174,7 +309,7 @@ export default function CheckoutPage() {
           </motion.div>
 
           {/* Order Summary Sidebar */}
-          <motion.div 
+          <motion.div
             className="lg:col-span-1"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -186,7 +321,7 @@ export default function CheckoutPage() {
           </motion.div>
         </div>
       </section>
-      
+
       <Footer />
     </div>
   );

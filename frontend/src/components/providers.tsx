@@ -6,6 +6,7 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { store } from '@/store';
 import { Toaster } from 'sonner';
 import { BottomNav } from '@/components/ui/BottomNav';
+import { ThemeProvider } from '@/components/providers/ThemeProvider';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -21,24 +22,26 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ReduxProvider store={store}>
       <QueryClientProvider client={queryClient}>
-        <div className="min-h-screen flex flex-col">
-          <main className="flex-1 pb-20 lg:pb-0">
-            {children}
-          </main>
-          <Toaster
-            position="bottom-right"
-            richColors
-            closeButton
-            toastOptions={{
-              duration: 4000,
-              style: {
-                background: 'white',
-                border: '1px solid #e5e7eb',
-              },
-            }}
-          />
-          <BottomNav />
-        </div>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
+          <div className="min-h-screen flex flex-col bg-background">
+            <main className="relative flex-1 pb-20 lg:pb-0">
+              {children}
+            </main>
+            <Toaster
+              position="bottom-right"
+              richColors
+              closeButton
+              toastOptions={{
+                duration: 4000,
+                style: {
+                  background: 'white',
+                  border: '1px solid #e5e7eb',
+                },
+              }}
+            />
+            {/* BottomNav removed as it is already in RootLayout as BottomNavigation */}
+          </div>
+        </ThemeProvider>
       </QueryClientProvider>
     </ReduxProvider>
   );

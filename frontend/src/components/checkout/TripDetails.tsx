@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Calendar, Clock, MapPin, Users, Star } from 'lucide-react';
+import Image from 'next/image';
 import { Trip } from '@/types';
 
 function cn(...classes: (string | undefined | false)[]) {
@@ -38,20 +39,24 @@ export default function TripDetails({ trip, selectedDate, guestCount, onDateChan
 
   // Get the first image from the trip
   const firstImage = trip.images && trip.images.length > 0 ? trip.images.find(img => img.isPrimary)?.url || trip.images[0]?.url : null;
-  
+
   return (
     <div className="bg-white rounded-lg shadow-sm border p-6">
       <h2 className="text-xl font-semibold text-gray-900 mb-6">Trip Details</h2>
-      
+
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Trip Image */}
         <div className="lg:w-1/3">
           {firstImage ? (
-            <img
-              src={firstImage}
-              alt={trip.title}
-              className="w-full h-48 object-cover rounded-lg"
-            />
+            <div className="relative w-full h-48">
+              <Image
+                src={firstImage}
+                alt={trip.title}
+                fill
+                className="object-cover rounded-lg"
+                sizes="(max-width: 768px) 100vw, 300px"
+              />
+            </div>
           ) : (
             <div className="w-full h-48 bg-gray-200 rounded-lg flex items-center justify-center">
               <span className="text-gray-500">No image available</span>
@@ -105,9 +110,9 @@ export default function TripDetails({ trip, selectedDate, guestCount, onDateChan
 
           {/* Guest Count */}
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
+            <span className="block text-sm font-medium text-gray-700">
               Guests
-            </label>
+            </span>
             <div className="flex items-center space-x-2">
               <Users className="w-4 h-4 text-gray-500" />
               <span className="text-sm text-gray-900">

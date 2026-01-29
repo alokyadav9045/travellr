@@ -26,6 +26,14 @@ const bookingSchema = new mongoose.Schema(
       required: [true, 'Vendor is required']
     },
 
+    tripSnapshot: {
+      title: String,
+      slug: String,
+      duration: { days: Number, nights: Number },
+      location: { city: String, country: String },
+      image: String
+    },
+
     // Guest Information
     totalGuests: {
       type: Number,
@@ -173,7 +181,7 @@ bookingSchema.index({ status: 1 });
 bookingSchema.index({ paymentStatus: 1 });
 
 // Generate booking number before saving
-bookingSchema.pre('save', async function(next) {
+bookingSchema.pre('save', async function (next) {
   if (!this.bookingNumber) {
     const count = await mongoose.model('Booking').countDocuments();
     const timestamp = Date.now().toString().slice(-6);
@@ -183,7 +191,7 @@ bookingSchema.pre('save', async function(next) {
 });
 
 // Virtual for pricing summary
-bookingSchema.virtual('pricingSummary').get(function() {
+bookingSchema.virtual('pricingSummary').get(function () {
   return {
     basePrice: this.basePrice,
     platformFee: this.platformFee,
@@ -194,7 +202,7 @@ bookingSchema.virtual('pricingSummary').get(function() {
 });
 
 // Virtual for refund eligibility
-bookingSchema.virtual('isRefundable').get(function() {
+bookingSchema.virtual('isRefundable').get(function () {
   return this.refundStatus === 'none' && ['pending', 'confirmed'].includes(this.status);
 });
 

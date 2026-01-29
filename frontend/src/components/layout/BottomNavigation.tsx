@@ -70,8 +70,8 @@ export function BottomNavigation() {
                     className="fixed bottom-0 left-0 right-0 z-50 md:hidden"
                 >
                     {/* Background with blur */}
-                    <div className="bg-white/90 backdrop-blur-lg border-t border-gray-200 shadow-lg">
-                        <div className="flex items-center justify-around px-2 py-2 safe-area-bottom">
+                    <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-lg border-t border-gray-200 dark:border-gray-800 shadow-lg transition-colors duration-300">
+                        <div className="relative flex items-center justify-around px-2 py-2 safe-area-bottom">
                             {navItems.map((item) => {
                                 const isActive = pathname === item.href;
 
@@ -91,8 +91,8 @@ export function BottomNavigation() {
                                         className={cn(
                                             'flex flex-col items-center justify-center py-2 px-4 rounded-xl transition-all min-w-[60px]',
                                             isActive
-                                                ? 'text-[#FF6B35]'
-                                                : 'text-gray-500 hover:text-gray-700'
+                                                ? 'text-[#F15A24]'
+                                                : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
                                         )}
                                     >
                                         <motion.div
@@ -108,7 +108,7 @@ export function BottomNavigation() {
                                             {isActive && (
                                                 <motion.div
                                                     layoutId="activeIndicator"
-                                                    className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-[#FF6B35] rounded-full"
+                                                    className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-[#F15A24] rounded-full"
                                                 />
                                             )}
                                         </motion.div>

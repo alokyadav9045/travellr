@@ -39,12 +39,12 @@ export default function TripDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
         <Header />
         <div className="pt-20 flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <div className="w-16 h-16 border-4 border-[#FF6B35] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-            <p className="text-gray-600">Loading trip details...</p>
+            <p className="text-gray-600 dark:text-gray-400">Loading trip details...</p>
           </div>
         </div>
       </div>
@@ -53,17 +53,17 @@ export default function TripDetailPage() {
 
   if (error || !trip) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
         <Header />
         <div className="pt-20 flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
-            <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-20 h-20 bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="text-4xl">😔</span>
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Trip not found</h2>
-            <p className="text-gray-600 mb-6">The trip you're looking for doesn't exist or has been removed.</p>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Trip not found</h2>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">The trip you're looking for doesn't exist or has been removed.</p>
             <Link href="/trips">
-              <Button className="bg-[#FF6B35] hover:bg-[#e55a2b]">
+              <Button className="bg-[#FF6B35] hover:bg-[#e55a2b] text-white">
                 <ChevronLeft className="h-4 w-4 mr-2" />
                 Back to Trips
               </Button>
@@ -86,7 +86,7 @@ export default function TripDetailPage() {
   const gradientIndex = Math.floor(Math.random() * gradients.length);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
       <Header />
 
       {/* Hero Image/Gradient */}
@@ -126,7 +126,7 @@ export default function TripDetailPage() {
             >
               <div className="flex items-center gap-2 text-white/80 text-sm mb-2">
                 <MapPin className="h-4 w-4" />
-                <span>{trip.location}</span>
+                <span>{typeof trip.location === 'object' ? `${trip.location.city}${trip.location.country ? `, ${trip.location.country}` : ''}` : trip.location}</span>
               </div>
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">{trip.title}</h1>
               <div className="flex flex-wrap items-center gap-4 text-white/90">
@@ -158,10 +158,10 @@ export default function TripDetailPage() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-white rounded-2xl p-6 md:p-8 shadow-sm"
+              className="bg-white dark:bg-gray-900 rounded-2xl p-6 md:p-8 shadow-sm dark:shadow-gray-900/10 border border-transparent dark:border-gray-800"
             >
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">About This Trip</h2>
-              <p className="text-gray-600 leading-relaxed whitespace-pre-line">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">About This Trip</h2>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-line">
                 {trip.description || 'Experience an unforgettable journey through breathtaking landscapes and immersive cultural experiences. Our expert guides will ensure your safety while you create memories that last a lifetime.'}
               </p>
             </motion.div>
@@ -171,9 +171,9 @@ export default function TripDetailPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="bg-white rounded-2xl p-6 md:p-8 shadow-sm"
+              className="bg-white dark:bg-gray-900 rounded-2xl p-6 md:p-8 shadow-sm dark:shadow-gray-900/10 border border-transparent dark:border-gray-800"
             >
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Itinerary</h2>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Itinerary</h2>
               <div className="space-y-6">
                 {(trip.itinerary && trip.itinerary.length > 0 ? trip.itinerary : [
                   { day: 1, title: 'Arrival & Welcome', description: 'Meet your group and guides, enjoy a welcome dinner.' },
@@ -184,8 +184,8 @@ export default function TripDetailPage() {
                     <div className="absolute -left-3 top-0 w-6 h-6 bg-[#FF6B35] rounded-full flex items-center justify-center text-white text-xs font-bold">
                       {day.day || index + 1}
                     </div>
-                    <h3 className="font-semibold text-gray-900 mb-1">{day.title}</h3>
-                    <p className="text-gray-600 text-sm">{day.description}</p>
+                    <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{day.title}</h3>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm">{day.description}</p>
                   </div>
                 ))}
               </div>
@@ -198,10 +198,10 @@ export default function TripDetailPage() {
               transition={{ delay: 0.2 }}
               className="grid md:grid-cols-2 gap-6"
             >
-              <div className="bg-white rounded-2xl p-6 shadow-sm">
-                <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
-                  <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                    <Check className="h-4 w-4 text-green-600" />
+              <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-sm dark:shadow-gray-900/10 border border-transparent dark:border-gray-800">
+                <h3 className="font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                  <div className="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+                    <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
                   </div>
                   What's Included
                 </h3>
@@ -209,7 +209,7 @@ export default function TripDetailPage() {
                   {(trip.inclusions && trip.inclusions.length > 0 ? trip.inclusions : [
                     'Professional guides', 'All meals', 'Accommodation', 'Transportation', 'Safety equipment'
                   ]).map((item: string, index: number) => (
-                    <li key={index} className="flex items-start gap-2 text-gray-600">
+                    <li key={index} className="flex items-start gap-2 text-gray-600 dark:text-gray-400">
                       <Check className="h-5 w-5 text-green-500 shrink-0 mt-0.5" />
                       <span>{item}</span>
                     </li>
@@ -217,10 +217,10 @@ export default function TripDetailPage() {
                 </ul>
               </div>
 
-              <div className="bg-white rounded-2xl p-6 shadow-sm">
-                <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
-                  <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
-                    <X className="h-4 w-4 text-red-600" />
+              <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-sm dark:shadow-gray-900/10 border border-transparent dark:border-gray-800">
+                <h3 className="font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                  <div className="w-8 h-8 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
+                    <X className="h-4 w-4 text-red-600 dark:text-red-400" />
                   </div>
                   What's Not Included
                 </h3>
@@ -228,7 +228,7 @@ export default function TripDetailPage() {
                   {(trip.exclusions && trip.exclusions.length > 0 ? trip.exclusions : [
                     'Flights', 'Travel insurance', 'Personal expenses', 'Tips'
                   ]).map((item: string, index: number) => (
-                    <li key={index} className="flex items-start gap-2 text-gray-600">
+                    <li key={index} className="flex items-start gap-2 text-gray-600 dark:text-gray-400">
                       <X className="h-5 w-5 text-red-500 shrink-0 mt-0.5" />
                       <span>{item}</span>
                     </li>
@@ -244,20 +244,20 @@ export default function TripDetailPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="bg-white rounded-2xl p-6 shadow-lg sticky top-24"
+              className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-lg dark:shadow-gray-900/20 sticky top-24 border border-transparent dark:border-gray-800"
             >
               {/* Price */}
               <div className="mb-6">
                 <div className="flex items-baseline gap-2">
                   <span className="text-3xl font-bold text-[#FF6B35]">
-                    ₹{(trip.price || 9999).toLocaleString()}
+                    ₹{(trip.price?.amount || 9999).toLocaleString()}
                   </span>
-                  <span className="text-gray-500">/person</span>
+                  <span className="text-gray-500 dark:text-gray-400">/{trip.price?.priceType === 'per_group' ? 'group' : 'person'}</span>
                 </div>
-                {trip.originalPrice && trip.originalPrice > trip.price && (
+                {trip.price?.discountedAmount && trip.price.discountedAmount < trip.price.amount && (
                   <div className="flex items-center gap-2 mt-1">
-                    <span className="text-gray-400 line-through">₹{trip.originalPrice.toLocaleString()}</span>
-                    <span className="text-green-600 text-sm font-medium">Save {Math.round(((trip.originalPrice - trip.price) / trip.originalPrice) * 100)}%</span>
+                    <span className="text-gray-400 dark:text-gray-500 line-through">₹{trip.price.amount.toLocaleString()}</span>
+                    <span className="text-green-600 dark:text-green-400 text-sm font-medium">Save {trip.price.discountPercentage || Math.round(((trip.price.amount - trip.price.discountedAmount) / trip.price.amount) * 100)}%</span>
                   </div>
                 )}
               </div>
@@ -265,7 +265,7 @@ export default function TripDetailPage() {
               {/* Booking Form */}
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     <Calendar className="h-4 w-4 inline mr-1" /> Select Date
                   </label>
                   <Input
@@ -273,12 +273,12 @@ export default function TripDetailPage() {
                     value={selectedDate}
                     onChange={(e) => setSelectedDate(e.target.value)}
                     min={new Date().toISOString().split('T')[0]}
-                    className="w-full"
+                    className="w-full bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-white"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     <Users className="h-4 w-4 inline mr-1" /> Number of Guests
                   </label>
                   <Input
@@ -287,59 +287,60 @@ export default function TripDetailPage() {
                     onChange={(e) => setGuests(Math.max(1, parseInt(e.target.value) || 1))}
                     min={trip.groupSize?.min || 1}
                     max={trip.groupSize?.max || 20}
+                    className="w-full bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-white"
                   />
                 </div>
 
-                <div className="border-t border-gray-100 pt-4 space-y-2">
+                <div className="border-t border-gray-100 dark:border-gray-800 pt-4 space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">₹{(trip.price || 9999).toLocaleString()} × {guests} guests</span>
-                    <span>₹{((trip.price || 9999) * guests).toLocaleString()}</span>
+                    <span className="text-gray-600 dark:text-gray-400">₹{(trip.price?.amount || 9999).toLocaleString()} × {guests} guests</span>
+                    <span className="dark:text-gray-200">₹{((trip.price?.amount || 9999) * guests).toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between font-bold text-lg">
-                    <span>Total</span>
-                    <span className="text-[#FF6B35]">₹{((trip.price || 9999) * guests).toLocaleString()}</span>
+                    <span className="text-gray-900 dark:text-white">Total</span>
+                    <span className="text-[#FF6B35]">₹{((trip.price?.amount || 9999) * guests).toLocaleString()}</span>
                   </div>
                 </div>
 
                 <Button
-                  className="w-full bg-[#FF6B35] hover:bg-[#e55a2b] h-12 text-base font-semibold"
+                  className="w-full bg-[#FF6B35] hover:bg-[#e55a2b] h-12 text-base font-semibold text-white"
                   onClick={handleBookNow}
                 >
                   Book Now
                 </Button>
 
-                <p className="text-xs text-gray-500 text-center">
+                <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
                   You won't be charged yet
                 </p>
               </div>
 
               {/* Trust Badges */}
-              <div className="mt-6 pt-6 border-t border-gray-100 space-y-3">
-                <div className="flex items-center gap-3 text-sm text-gray-600">
+              <div className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-800 space-y-3">
+                <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
                   <Shield className="h-5 w-5 text-green-500" />
                   <span>Secure payment with SSL encryption</span>
                 </div>
-                <div className="flex items-center gap-3 text-sm text-gray-600">
+                <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
                   <BadgeCheck className="h-5 w-5 text-blue-500" />
                   <span>Verified vendor with excellent reviews</span>
                 </div>
               </div>
 
               {/* Vendor Info */}
-              <div className="mt-6 pt-6 border-t border-gray-100">
-                <h4 className="font-semibold text-gray-900 mb-3">Hosted by</h4>
+              <div className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-800">
+                <h4 className="font-semibold text-gray-900 dark:text-white mb-3">Hosted by</h4>
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 bg-[#FF6B35] rounded-full flex items-center justify-center text-white font-bold">
                     {typeof trip.vendor === 'string' ? 'V' : trip.vendor?.businessName?.charAt(0) || 'V'}
                   </div>
                   <div className="flex-1">
-                    <p className="font-medium text-gray-900">
+                    <p className="font-medium text-gray-900 dark:text-white">
                       {typeof trip.vendor === 'string' ? 'Verified Vendor' : trip.vendor?.businessName || 'Travellr Vendor'}
                     </p>
-                    <p className="text-sm text-gray-500">Verified Host</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Verified Host</p>
                   </div>
-                  <button className="w-10 h-10 border border-gray-200 rounded-full flex items-center justify-center hover:bg-gray-50">
-                    <MessageCircle className="h-5 w-5 text-gray-600" />
+                  <button className="w-10 h-10 border border-gray-200 dark:border-gray-700 rounded-full flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                    <MessageCircle className="h-5 w-5 text-gray-600 dark:text-gray-400" />
                   </button>
                 </div>
               </div>

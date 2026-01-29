@@ -1,16 +1,23 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Inter, Poppins } from 'next/font/google';
+import { Inter, Montserrat } from 'next/font/google';
 import { Suspense } from 'react';
 import { Providers } from '@/components/providers';
 import { GoogleAnalytics } from '@/lib/analytics';
 import BottomNavigation from '@/components/layout/BottomNavigation';
+import { PageTransition } from '@/components/layout/PageTransition';
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
-const poppins = Poppins({
-  weight: ['400', '500', '600', '700'],
+const inter = Inter({
   subsets: ['latin'],
-  variable: '--font-poppins'
+  variable: '--font-inter',
+  display: 'swap',
+});
+
+const montserrat = Montserrat({
+  weight: ['300', '400', '500', '600', '700', '800'],
+  subsets: ['latin'],
+  variable: '--font-montserrat',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -70,15 +77,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <Suspense fallback={null}>
           <GoogleAnalytics />
         </Suspense>
       </head>
-      <body className={`${inter.variable} ${poppins.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} ${montserrat.variable} font-sans antialiased relative`} suppressHydrationWarning>
         <Providers>
-          {children}
+          <PageTransition>
+            {children}
+          </PageTransition>
           <BottomNavigation />
         </Providers>
       </body>

@@ -18,7 +18,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'images.unsplash.com',
+        hostname: '**.unsplash.com',
       },
       {
         protocol: 'https',
@@ -61,7 +61,7 @@ const nextConfig = {
     ]
   },
   turbopack: {
-    root: 'C:\\Users\\TechTeam\\Desktop\\Alok\\travellr\\frontend'
+    root: '.'
   },
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     config.externals.push({

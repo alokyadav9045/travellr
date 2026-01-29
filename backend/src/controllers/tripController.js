@@ -6,12 +6,13 @@ const Vendor = require('../models/Vendor');
 const storageService = require('../services/storageService');
 
 exports.list = asyncHandler(async (req, res) => {
-  const { page = 1, limit = 10, q, category, minPrice, maxPrice, minDuration, maxDuration, featured, vendor, sortBy = 'createdAt' } = req.query;
+  const { page = 1, limit = 10, q, category, minPrice, maxPrice, minDuration, maxDuration, featured, vendor, tags, sortBy = 'createdAt' } = req.query;
   const skip = (page - 1) * limit;
   const filter = { isActive: true };
 
   if (q) filter.$text = { $search: q };
   if (category) filter.category = category;
+  if (tags) filter.tags = { $in: tags.split(',') };
   if (vendor) filter.vendor = vendor;
   if (featured === 'true') filter.isFeatured = true;
   if (minPrice || maxPrice) {

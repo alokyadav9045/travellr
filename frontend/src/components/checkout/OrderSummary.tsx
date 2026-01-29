@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Calendar, MapPin, Users, Clock } from 'lucide-react';
+import Image from 'next/image';
 import { Trip } from '@/types';
 
 function cn(...classes: (string | undefined | false)[]) {
@@ -24,11 +25,11 @@ interface OrderSummaryProps {
   };
 }
 
-export default function OrderSummary({ 
-  trip, 
-  selectedDate, 
-  guestCount, 
-  promo, 
+export default function OrderSummary({
+  trip,
+  selectedDate,
+  guestCount,
+  promo,
   taxes = 0,
   fees = { service: 0, processing: 0 }
 }: OrderSummaryProps) {
@@ -60,19 +61,23 @@ export default function OrderSummary({
   return (
     <div className="bg-white rounded-lg shadow-sm border p-6 sticky top-6">
       <h2 className="text-xl font-semibold text-gray-900 mb-6">Order Summary</h2>
-      
+
       {/* Trip Overview */}
       <div className="mb-6">
         {firstImage && (
-          <img
-            src={firstImage}
-            alt={trip.title}
-            className="w-full h-32 object-cover rounded-lg mb-4"
-          />
+          <div className="relative w-full h-32 mb-4">
+            <Image
+              src={firstImage}
+              alt={trip.title}
+              fill
+              className="object-cover rounded-lg"
+              sizes="(max-width: 768px) 100vw, 300px"
+            />
+          </div>
         )}
-        
+
         <h3 className="font-medium text-gray-900 mb-2">{trip.title}</h3>
-        
+
         <div className="space-y-2 text-sm text-gray-600">
           <div className="flex items-center">
             <MapPin className="w-4 h-4 mr-2" />

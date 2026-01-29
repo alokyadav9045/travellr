@@ -6,6 +6,8 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Trip } from '@/types';
+import Image from 'next/image';
+import { cleanImageUrl } from '@/lib/utils/images';
 
 interface FeaturedTripsProps {
   trips: Trip[];
@@ -14,111 +16,125 @@ interface FeaturedTripsProps {
   viewAllLink?: string;
 }
 
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const item = {
+  hidden: { opacity: 0, y: 30 },
+  show: {
+    opacity: 1,
+    y: 0,
+  }
+};
+
 // Simplified Trip Card for Featured Trips
 function SimpleTripCard({ trip }: { trip: Trip }) {
   const primaryImage = trip.images.find(img => img.isPrimary) || trip.images[0];
   const hasDiscount = trip.price.discountedAmount && trip.price.discountedAmount < trip.price.amount;
-  
-  // Generate a gradient color based on trip category
-  const gradients: Record<string, string> = {
-    adventure: 'from-orange-500 to-red-600',
-    beach: 'from-blue-400 to-cyan-500',
-    cultural: 'from-purple-500 to-indigo-600',
-    wellness: 'from-green-500 to-emerald-600',
-    default: 'from-gray-600 to-gray-800',
-  };
-  const gradient = gradients[trip.category] || gradients.default;
-  
+
   return (
     <motion.div
-      whileHover={{ y: -6 }}
-      className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
+      variants={item}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      whileHover={{ y: -10, transition: { duration: 0.3 } }}
+      className="group bg-white dark:bg-gray-900 rounded-[2rem] overflow-hidden shadow-[0_10px_30px_-5px_rgba(0,0,0,0.1)] hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.2)] dark:shadow-none transition-all duration-500 border border-gray-100 dark:border-gray-800 h-full flex flex-col"
     >
-      {/* Image/Gradient Container */}
-      <div className={`relative h-48 bg-gradient-to-br ${gradient}`}>
-        {/* Pattern overlay */}
-        <div className="absolute inset-0 opacity-20" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E")`,
-        }} />
-        
-        {/* Dark gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-        
+      {/* Image Container */}
+      <div className="relative h-64 overflow-hidden">
+        <Image
+          src={cleanImageUrl(primaryImage?.url) || 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1'}
+          alt={trip.title}
+          fill
+          className="object-cover transition-transform duration-700 group-hover:scale-110"
+          sizes="(max-width: 768px) 100vw, 320px"
+        />
+
+        {/* Overlays */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300" />
+
         {/* Wishlist Button */}
-        <button className="absolute top-3 right-3 w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white transition-colors z-10 opacity-0 group-hover:opacity-100">
-          <Heart className="h-5 w-5 text-gray-600 hover:text-red-500 transition-colors" />
+        <button className="absolute top-4 right-4 w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-[#F15A24] transition-all duration-300 z-10 border border-white/20">
+          <Heart className="h-5 w-5 text-white" />
         </button>
-        
+
         {/* Featured Badge */}
         {trip.isFeatured && (
-          <div className="absolute top-3 left-3 px-3 py-1 bg-[#FF6B35] text-white text-xs font-semibold rounded-full">
-            ⭐ Featured
-          </div>
+          <motion.div
+            animate={{ scale: [1, 1.05, 1] }}
+            transition={{ repeat: Infinity, duration: 2 }}
+            className="absolute top-4 left-4 px-3 py-1.5 bg-[#F15A24] text-white text-[10px] uppercase tracking-widest font-bold rounded-full shadow-lg"
+          >
+            Featured
+          </motion.div>
         )}
-        
+
+        {/* Price Tag */}
+        <div className="absolute bottom-4 left-4 flex flex-col items-start translate-y-1 group-hover:translate-y-0 transition-transform duration-300">
+          <div className="flex items-center gap-1.5 bg-white/95 dark:bg-gray-950/95 backdrop-blur-md px-3 py-2 rounded-2xl shadow-xl">
+            <span className="text-lg font-black text-[#F15A24]">₹{(trip.price.discountedAmount || trip.price.amount).toLocaleString()}</span>
+            {hasDiscount && (
+              <span className="text-xs text-gray-400 line-through">₹{trip.price.amount.toLocaleString()}</span>
+            )}
+          </div>
+        </div>
+
         {/* Duration Badge */}
-        <div className="absolute bottom-3 right-3 px-3 py-1 bg-black/60 backdrop-blur-sm text-white text-xs font-medium rounded-full">
+        <div className="absolute bottom-4 right-4 px-3 py-1.5 bg-black/40 backdrop-blur-md text-white text-xs font-bold rounded-xl border border-white/10">
           {trip.duration.days}D / {trip.duration.nights}N
         </div>
-        
-        {/* Discount Badge */}
-        {hasDiscount && trip.price.discountPercentage && (
-          <div className="absolute bottom-3 left-3 px-3 py-1 bg-green-500 text-white text-xs font-semibold rounded-full">
-            {trip.price.discountPercentage}% OFF
-          </div>
-        )}
       </div>
-      
+
       {/* Content */}
-      <div className="p-5">
-        {/* Location */}
-        <div className="flex items-center gap-1.5 text-sm text-gray-500 mb-2">
-          <MapPin className="h-4 w-4 text-[#FF6B35]" />
-          <span>{trip.location.city}, {trip.location.country}</span>
-        </div>
-        
-        {/* Title */}
-        <Link href={`/trips/${trip.slug}`}>
-          <h3 className="text-lg font-bold text-gray-900 group-hover:text-[#FF6B35] transition-colors line-clamp-2 min-h-[56px]">
-            {trip.title}
-          </h3>
-        </Link>
-        
-        {/* Rating */}
-        <div className="flex items-center gap-2 mt-3">
-          <div className="flex items-center gap-1 bg-yellow-50 px-2 py-1 rounded-full">
-            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-            <span className="font-semibold text-gray-900 text-sm">
-              {trip.rating.average.toFixed(1)}
-            </span>
+      <div className="p-6 flex-1 flex flex-col justify-between">
+        <div>
+          {/* Location */}
+          <div className="flex items-center gap-2 text-xs font-bold text-[#F15A24] uppercase tracking-widest mb-3">
+            <MapPin className="h-3.5 w-3.5" />
+            <span>{trip.location.city}, {trip.location.country}</span>
           </div>
-          <span className="text-sm text-gray-500">
-            ({trip.rating.count} reviews)
-          </span>
+
+          {/* Title */}
+          <Link href={`/trips/${trip.slug}`}>
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-[#F15A24] transition-colors line-clamp-2 leading-snug">
+              {trip.title}
+            </h3>
+          </Link>
         </div>
-        
-        {/* Price */}
-        <div className="flex items-baseline gap-2 mt-4 pt-4 border-t border-gray-100">
-          <span className="text-sm text-gray-500">From</span>
-          {hasDiscount && (
-            <span className="text-sm text-gray-400 line-through">
-              ₹{trip.price.amount.toLocaleString()}
-            </span>
-          )}
-          <span className="text-xl font-bold text-[#FF6B35]">
-            ₹{(trip.price.discountedAmount || trip.price.amount).toLocaleString()}
-          </span>
-          <span className="text-sm text-gray-500">/person</span>
+
+        <div>
+          {/* Rating */}
+          <div className="flex items-center justify-between mt-5 pt-5 border-t border-gray-50 dark:border-gray-800">
+            <div className="flex items-center gap-2">
+              <div className="flex items-center text-yellow-500">
+                <Star className="h-4 w-4 fill-current" />
+                <span className="ml-1 font-bold text-gray-900 dark:text-white">{trip.rating.average.toFixed(1)}</span>
+              </div>
+              <span className="text-xs text-gray-400 font-medium">({trip.rating.count} reviews)</span>
+            </div>
+
+            <Link href={`/trips/${trip.slug}`}>
+              <div className="w-10 h-10 rounded-full bg-gray-50 dark:bg-gray-800 flex items-center justify-center group-hover:bg-[#F15A24] group-hover:text-white transition-all duration-300">
+                <ArrowRight className="h-5 w-5" />
+              </div>
+            </Link>
+          </div>
         </div>
       </div>
     </motion.div>
   );
 }
 
-export function FeaturedTrips({ 
-  trips, 
+export function FeaturedTrips({
+  trips,
   title = "Featured Trips",
-  subtitle = "Hand-picked experiences loved by travelers",
+  subtitle = "Hand-picked experiences",
   viewAllLink = "/trips?featured=true"
 }: FeaturedTripsProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -138,74 +154,73 @@ export function FeaturedTrips({
   }
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-24 bg-white dark:bg-gray-950 transition-colors duration-300 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="flex items-end justify-between mb-12">
-          <div>
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+          <div className="max-w-xl">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="text-[#FF6B35] font-medium mb-2"
+              className="flex items-center gap-2 text-[#F15A24] font-black uppercase tracking-[0.2em] text-xs mb-4"
             >
-              ⭐ {subtitle}
-            </motion.p>
+              <div className="h-px w-8 bg-[#F15A24]" />
+              {subtitle}
+            </motion.div>
             <motion.h2
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-3xl md:text-4xl font-bold text-gray-900"
+              className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white leading-tight"
             >
               {title}
             </motion.h2>
           </div>
-          
-          <div className="hidden md:flex items-center gap-3">
-            <button
-              onClick={() => scroll('left')}
-              className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-400 hover:bg-gray-50 transition-colors"
-            >
-              <ChevronLeft className="h-5 w-5 text-gray-600" />
-            </button>
-            <button
-              onClick={() => scroll('right')}
-              className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-400 hover:bg-gray-50 transition-colors"
-            >
-              <ChevronRight className="h-5 w-5 text-gray-600" />
-            </button>
+
+          <div className="flex items-center gap-4">
+            <Link href={viewAllLink} className="mr-4 group flex items-center gap-2 text-sm font-bold text-gray-500 hover:text-[#F15A24] transition-colors">
+              View All Trips
+              <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+            <div className="flex gap-2">
+              <button
+                onClick={() => scroll('left')}
+                className="w-12 h-12 rounded-full border border-gray-200 dark:border-gray-800 flex items-center justify-center hover:bg-[#F15A24] hover:border-[#F15A24] hover:text-white transition-all duration-300 group shadow-sm"
+                suppressHydrationWarning
+              >
+                <ChevronLeft className="h-6 w-6 text-gray-400 group-hover:text-white" />
+              </button>
+              <button
+                onClick={() => scroll('right')}
+                className="w-12 h-12 rounded-full border border-gray-200 dark:border-gray-800 flex items-center justify-center hover:bg-[#F15A24] hover:border-[#F15A24] hover:text-white transition-all duration-300 group shadow-sm"
+                suppressHydrationWarning
+              >
+                <ChevronRight className="h-6 w-6 text-gray-400 group-hover:text-white" />
+              </button>
+            </div>
           </div>
         </div>
 
         {/* Trips Carousel */}
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          variants={container}
+          initial="hidden"
+          whileInView="show"
           viewport={{ once: true }}
           ref={scrollRef}
-          className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 -mx-4 px-4 snap-x snap-mandatory"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          className="flex gap-8 overflow-x-auto scrollbar-hide pb-12 -mx-4 px-4 snap-x snap-mandatory no-scrollbar"
         >
           {trips.map((trip) => (
-            <div 
-              key={trip._id} 
-              className="w-[320px] shrink-0 snap-start"
+            <div
+              key={trip._id}
+              className="w-[340px] md:w-[380px] shrink-0 snap-start"
             >
               <SimpleTripCard trip={trip} />
             </div>
           ))}
         </motion.div>
-
-        {/* View All Link */}
-        <div className="mt-10 text-center">
-          <Link href={viewAllLink}>
-            <Button variant="outline" className="gap-2">
-              View All Trips
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-          </Link>
-        </div>
       </div>
     </section>
   );
