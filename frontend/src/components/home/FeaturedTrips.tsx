@@ -97,7 +97,7 @@ function SimpleTripCard({ trip }: { trip: Trip }) {
           {/* Location */}
           <div className="flex items-center gap-2 text-xs font-bold text-[#F15A24] uppercase tracking-widest mb-3">
             <MapPin className="h-3.5 w-3.5" />
-            <span>{trip.location.city}, {trip.location.country}</span>
+            <span>{typeof trip.location === 'object' ? `${trip.location.city}, ${trip.location.country}` : trip.location}</span>
           </div>
 
           {/* Title */}

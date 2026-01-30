@@ -97,8 +97,12 @@ export function TrendingDestinations() {
                                             <Sparkles className="h-4 w-4 fill-current" />
                                             <span className="text-xs font-black uppercase tracking-widest text-[#F15A24]">Top Rated</span>
                                         </div>
-                                        <h3 className="text-4xl font-black text-white mb-2 leading-tight drop-shadow-2xl">{trip.location.city}</h3>
-                                        <p className="text-white/80 font-bold tracking-[0.2em] text-xs uppercase">{trip.location.state}</p>
+                                        <h3 className="text-4xl font-black text-white mb-2 leading-tight drop-shadow-2xl">
+                                            {typeof trip.location === 'object' ? trip.location.city : trip.location}
+                                        </h3>
+                                        <p className="text-white/80 font-bold tracking-[0.2em] text-xs uppercase">
+                                            {typeof trip.location === 'object' ? trip.location.state : ''}
+                                        </p>
                                     </div>
 
                                     <div className="transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">

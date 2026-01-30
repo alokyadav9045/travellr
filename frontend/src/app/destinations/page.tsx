@@ -207,7 +207,7 @@ export default function DestinationsPage() {
                                                 <h3 className="text-white font-bold text-xl mb-1 line-clamp-1">{trip.title}</h3>
                                                 <p className="text-white/80 text-sm flex items-center gap-1">
                                                     <MapPin className="w-3.5 h-3.5" />
-                                                    {trip.location.city}, {trip.location.state}
+                                                    {typeof trip.location === 'object' ? `${trip.location.city}, ${trip.location.state}` : trip.location}
                                                 </p>
                                                 <div className="flex items-center justify-between mt-2">
                                                     <span className="text-white/90 text-sm">
@@ -293,7 +293,7 @@ export default function DestinationsPage() {
                                                     </h3>
                                                     <p className="text-gray-500 dark:text-gray-400 text-sm flex items-center gap-1 mt-1">
                                                         <MapPin className="w-3.5 h-3.5" />
-                                                        {trip.location.city}, {trip.location.state}
+                                                        {typeof trip.location === 'object' ? `${trip.location.city}, ${trip.location.state}` : trip.location}
                                                     </p>
                                                 </div>
                                                 <div className="flex items-center gap-1 bg-yellow-50 dark:bg-yellow-900/20 px-2 py-1 rounded-lg">

@@ -71,7 +71,7 @@ export default function TripDetails({ trip, selectedDate, guestCount, onDateChan
             <div className="flex items-center space-x-4 mt-2 text-sm text-gray-600">
               <div className="flex items-center">
                 <MapPin className="w-4 h-4 mr-1" />
-                {trip.location.city}, {trip.location.country}
+                {typeof trip.location === 'object' ? `${trip.location.city}, ${trip.location.country}` : trip.location}
               </div>
               <div className="flex items-center">
                 <Clock className="w-4 h-4 mr-1" />
@@ -136,6 +136,6 @@ export default function TripDetails({ trip, selectedDate, guestCount, onDateChan
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 }

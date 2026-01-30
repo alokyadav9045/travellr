@@ -104,7 +104,7 @@ export default function StaysPage() {
                                     <div className="p-5">
                                         <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400 text-sm mb-2">
                                             <MapPin className="h-3.5 w-3.5" />
-                                            {stay.location.city}, {stay.location.state}
+                                            {typeof stay.location === 'object' ? `${stay.location.city}, ${stay.location.state}` : stay.location}
                                         </div>
 
                                         <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-[#FF6B35] dark:group-hover:text-[#FF6B35] transition-colors">

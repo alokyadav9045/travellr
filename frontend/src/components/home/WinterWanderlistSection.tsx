@@ -122,9 +122,13 @@ export function WinterWanderlistSection() {
                                     <div className="absolute bottom-0 left-0 right-0 p-8 transform translate-y-6 group-hover:translate-y-0 transition-transform duration-500">
                                         <div className="flex items-center gap-2 mb-4 bg-white/20 backdrop-blur-md w-fit px-3 py-1 rounded-full border border-white/30">
                                             <MapPin className="h-3.5 w-3.5 text-blue-400" />
-                                            <span className="text-white font-black uppercase tracking-widest text-[10px]">{trip.location.state}</span>
+                                            <span className="text-white font-black uppercase tracking-widest text-[10px]">
+                                                {typeof trip.location === 'object' ? trip.location.state : 'Wonderland'}
+                                            </span>
                                         </div>
-                                        <h3 className="text-3xl font-black text-white mb-2 leading-tight group-hover:text-blue-300 transition-colors">{trip.location.city}</h3>
+                                        <h3 className="text-3xl font-black text-white mb-2 leading-tight group-hover:text-blue-300 transition-colors">
+                                            {typeof trip.location === 'object' ? trip.location.city : trip.location}
+                                        </h3>
                                         <div className="flex items-center gap-3 text-white/60">
                                             <div className="h-px w-10 bg-blue-500" />
                                             <span className="text-xs font-bold uppercase tracking-widest">Experience Winter</span>

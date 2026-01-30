@@ -81,7 +81,7 @@ export default function OrderSummary({
         <div className="space-y-2 text-sm text-gray-600">
           <div className="flex items-center">
             <MapPin className="w-4 h-4 mr-2" />
-            {trip.location.city}, {trip.location.country}
+            {typeof trip.location === 'object' ? `${trip.location.city}, ${trip.location.country}` : trip.location}
           </div>
           <div className="flex items-center">
             <Clock className="w-4 h-4 mr-2" />

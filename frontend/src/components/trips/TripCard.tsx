@@ -76,7 +76,11 @@ export function TripCard({
             <div className="flex-1">
               <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
                 <MapPin className="h-4 w-4" />
-                <span>{trip.location.city}, {trip.location.country}</span>
+                <span>
+                  {typeof trip.location === 'object'
+                    ? `${trip.location.city}, ${trip.location.country}`
+                    : trip.location}
+                </span>
               </div>
 
               <Link href={`/trips/${trip.slug}`}>
@@ -142,7 +146,6 @@ export function TripCard({
             src={primaryImage?.url || '/images/placeholder-trip.jpg'}
             alt={trip.title}
             fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover group-hover:scale-105 transition-transform duration-500"
           />
         </Link>
@@ -191,7 +194,11 @@ export function TripCard({
         {/* Location */}
         <div className="flex items-center gap-1 text-sm text-gray-500 mb-2">
           <MapPin className="h-4 w-4 text-[#FF6B35]" />
-          <span>{trip.location.city}, {trip.location.country}</span>
+          <span>
+            {typeof trip.location === 'object'
+              ? `${trip.location.city}, ${trip.location.country}`
+              : trip.location}
+          </span>
         </div>
 
         {/* Title */}

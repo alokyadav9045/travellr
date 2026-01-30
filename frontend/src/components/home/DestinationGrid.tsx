@@ -138,7 +138,7 @@ export function DestinationGrid() {
                           <div className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
                             <div className="flex items-center gap-2 text-white/90 text-sm mb-1 font-medium">
                               <MapPin className="h-3 w-3 text-[#F15A24]" />
-                              <span>{trip.location.state}</span>
+                              <span>{typeof trip.location === 'object' ? trip.location.state : trip.location}</span>
                             </div>
                             <h3 className="text-xl font-bold text-white mb-2 shadow-sm truncate">
                               {trip.title}

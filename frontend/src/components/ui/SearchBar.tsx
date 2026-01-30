@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Search, MapPin, Calendar, Users, X, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { formatCurrency } from '@/lib/utils/formatters';
 
@@ -131,12 +130,10 @@ export default function SearchBar({
           <div className="flex-1 flex items-center gap-3 border-r pr-4">
             <Search className={`text-gray-400 ${isHero ? 'w-6 h-6' : 'w-5 h-5'}`} />
             <div className="flex-1">
-              <label htmlFor={`searchQuery-${variant}`} className="text-xs text-gray-500 font-medium hidden md:block cursor-pointer">
+              <label className="text-xs text-gray-500 font-medium hidden md:block">
                 What are you looking for?
               </label>
               <input
-                id={`searchQuery-${variant}`}
-                name="q"
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
@@ -163,10 +160,8 @@ export default function SearchBar({
             <div className="hidden md:flex items-center gap-3 border-r pr-4">
               <MapPin className="w-6 h-6 text-gray-400" />
               <div className="flex-1">
-                <label htmlFor={`location-${variant}`} className="text-xs text-gray-500 font-medium cursor-pointer">Location</label>
+                <label className="text-xs text-gray-500 font-medium">Location</label>
                 <input
-                  id={`location-${variant}`}
-                  name="location"
                   type="text"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
@@ -217,15 +212,11 @@ export default function SearchBar({
                 className="w-full p-4 hover:bg-gray-50 transition-colors text-left flex items-center gap-4 border-b last:border-b-0"
               >
                 {suggestion.image && (
-                  <div className="relative w-16 h-16 flex-shrink-0">
-                    <Image
-                      src={suggestion.image}
-                      alt={suggestion.title}
-                      fill
-                      className="object-cover rounded-lg"
-                      sizes="64px"
-                    />
-                  </div>
+                  <img
+                    src={suggestion.image}
+                    alt={suggestion.title}
+                    className="w-16 h-16 object-cover rounded-lg"
+                  />
                 )}
                 <div className="flex-1">
                   <h4 className="font-semibold text-gray-900">{suggestion.title}</h4>

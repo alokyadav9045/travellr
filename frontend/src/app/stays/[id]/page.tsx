@@ -61,7 +61,7 @@ export default function StayDetailsPage() {
                             <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
                                 <span className="flex items-center gap-1">
                                     <MapPin className="h-4 w-4 text-[#FF6B35]" />
-                                    {stay.location.city}, {stay.location.state}
+                                    {typeof stay.location === 'object' ? `${stay.location.city}, ${stay.location.state}` : stay.location}
                                 </span>
                                 <span className="flex items-center gap-1">
                                     <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />

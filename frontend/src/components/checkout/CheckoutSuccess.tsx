@@ -83,7 +83,7 @@ export default function CheckoutSuccess({
               <h3 className="font-medium text-gray-900">{trip.title}</h3>
               <div className="flex items-center text-sm text-gray-600 mt-1">
                 <MapPin className="w-4 h-4 mr-1" />
-                {trip.location.city}, {trip.location.country}
+                {typeof trip.location === 'object' ? `${trip.location.city}, ${trip.location.country}` : trip.location}
               </div>
             </div>
             <div className="flex items-center text-sm text-gray-600">

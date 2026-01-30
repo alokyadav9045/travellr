@@ -2,11 +2,11 @@
 
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Search, 
-  MapPin, 
-  Calendar, 
-  Users, 
+import {
+  Search,
+  MapPin,
+  Calendar,
+  Users,
   SlidersHorizontal,
   Compass,
   TrendingUp,
@@ -86,7 +86,7 @@ const quickFilters: QuickFilter[] = [
 ];
 
 const popularDestinations = [
-  'Manali', 'Goa', 'Kerala', 'Rajasthan', 'Ladakh', 'Rishikesh', 
+  'Manali', 'Goa', 'Kerala', 'Rajasthan', 'Ladakh', 'Rishikesh',
   'Himachal Pradesh', 'Uttarakhand', 'Kashmir', 'Andaman'
 ];
 
@@ -132,18 +132,18 @@ export default function SmartSearchBar({
       case 'category':
         return activeFilters.category?.includes(filter.value.category[0]);
       case 'price':
-        return activeFilters.priceRange?.[0] === filter.value.priceRange[0] && 
-               activeFilters.priceRange?.[1] === filter.value.priceRange[1];
+        return activeFilters.priceRange?.[0] === filter.value.priceRange[0] &&
+          activeFilters.priceRange?.[1] === filter.value.priceRange[1];
       case 'duration':
-        return activeFilters.duration?.[0] === filter.value.duration[0] && 
-               activeFilters.duration?.[1] === filter.value.duration[1];
+        return activeFilters.duration?.[0] === filter.value.duration[0] &&
+          activeFilters.duration?.[1] === filter.value.duration[1];
       case 'rating':
         return activeFilters.rating === filter.value.rating;
       case 'special':
         if (filter.value.instantBook) return activeFilters.instantBook;
         if (filter.value.groupSize) {
-          return activeFilters.groupSize?.[0] === filter.value.groupSize[0] && 
-                 activeFilters.groupSize?.[1] === filter.value.groupSize[1];
+          return activeFilters.groupSize?.[0] === filter.value.groupSize[0] &&
+            activeFilters.groupSize?.[1] === filter.value.groupSize[1];
         }
         return false;
       default:
@@ -153,11 +153,11 @@ export default function SmartSearchBar({
 
   const combinedSuggestions = useMemo(() => {
     if (!searchQuery) return [...popularDestinations, ...recentSearches];
-    
+
     const filtered = [...popularDestinations, ...recentSearches, ...suggestions]
       .filter(item => item.toLowerCase().includes(searchQuery.toLowerCase()))
       .slice(0, 8);
-    
+
     return filtered;
   }, [searchQuery, suggestions]);
 
@@ -203,7 +203,7 @@ export default function SmartSearchBar({
             <SlidersHorizontal className="w-4 h-4" />
             <span>Filters</span>
             {activeFilterCount > 0 && (
-              <Badge 
+              <Badge
                 className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-red-500 text-white"
               >
                 {activeFilterCount}

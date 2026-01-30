@@ -51,16 +51,7 @@ export interface Trip {
   shortDescription?: string;
   category: string;
   tags: string[];
-  location: {
-    city: string;
-    state?: string;
-    country: string;
-    address?: string;
-    coordinates?: {
-      lat: number;
-      lng: number;
-    };
-  };
+  location: string | { city: string; state?: string; country: string; address?: string; coordinates?: { lat: number; lng: number; }; };
   images: Array<{
     url: string;
     publicId?: string;
@@ -79,7 +70,7 @@ export interface Trip {
     currency: string;
     discountedAmount?: number;
     discountPercentage?: number;
-    priceType?: 'per_person' | 'per_group';
+    priceType: 'per_person' | 'per_group';
   };
   groupSize: {
     min: number;
@@ -301,7 +292,6 @@ export interface TripSearchParams {
   page?: number;
   limit?: number;
   sort?: string;
-  tags?: string | string[]; // Added tags support
 }
 
 export interface PaginatedResponse<T> {

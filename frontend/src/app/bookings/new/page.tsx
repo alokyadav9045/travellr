@@ -276,7 +276,11 @@ function NewBookingContent() {
 
                 <div>
                   <h3 className="font-semibold text-lg">{trip.title}</h3>
-                  <p className="text-gray-600 text-sm">{trip.location?.city}, {trip.location?.country}</p>
+                  <p className="text-gray-600 text-sm">
+                    {typeof trip.location === 'object'
+                      ? `${trip.location.city}, ${trip.location.country}`
+                      : trip.location}
+                  </p>
                 </div>
 
                 <div className="border-t pt-4 space-y-2">

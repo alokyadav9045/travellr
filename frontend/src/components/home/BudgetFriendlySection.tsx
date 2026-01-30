@@ -119,7 +119,7 @@ export function BudgetFriendlySection() {
                                         <div className="flex flex-col gap-1">
                                             <div className="flex items-center gap-1.5 text-white/80 text-xs font-bold uppercase tracking-widest">
                                                 <MapPin className="h-3 w-3" />
-                                                {trip.location.city}
+                                                {typeof trip.location === 'object' ? trip.location.city : trip.location}
                                             </div>
                                             <h3 className="text-2xl font-black text-white leading-tight">
                                                 {trip.title}

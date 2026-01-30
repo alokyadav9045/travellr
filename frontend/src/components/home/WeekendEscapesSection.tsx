@@ -119,7 +119,7 @@ export function WeekendEscapesSection() {
                                         <div className="flex flex-col gap-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                                             <div className="flex items-center gap-2 text-white/80 text-xs font-bold uppercase tracking-[0.1em]">
                                                 <MapPin className="h-3.5 w-3.5 text-[#F15A24]" />
-                                                {trip.location.city}
+                                                {typeof trip.location === 'object' ? trip.location.city : trip.location}
                                             </div>
                                             <h3 className="text-2xl font-black text-white leading-tight">
                                                 {trip.title}
